@@ -155,6 +155,7 @@ Public Class Elevator
         End If
     End Sub
 
+
     Private Sub CoilTimer_Tick(sender As Object, e As EventArgs) Handles CoilTimer.Tick
 
         If (Me.ElevatorPhys.Top > Me.Panel2.Top And Me.CoilUP.Checked = True) Then
@@ -167,4 +168,14 @@ Public Class Elevator
 
 
     End Sub
+
+
+    Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
+        If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y Then
+            Me.CoilUP.CheckState = CheckState.Unchecked
+            Me.CoilDown.CheckState = CheckState.Checked
+        End If
+        ' Me.CoilDown.CheckState = CheckState.Unchecked
+    End Sub
+
 End Class
