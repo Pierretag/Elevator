@@ -386,7 +386,7 @@ Partial Class Elevator
         'CoilTimer
         '
         Me.CoilTimer.Enabled = True
-        Me.CoilTimer.Interval = 50
+        Me.CoilTimer.Interval = 25
         '
         'Elevator
         '
