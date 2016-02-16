@@ -7,6 +7,15 @@ Public Class Elevator
     Public Shared ServerName As String = "localhost"
     Private serverIsRunning As Boolean = False
     Private clientIsRunning As Boolean = False
+    Public floorAsked As Integer
+    Dim isOnFloor As Boolean
+
+
+    Public Sub setFloorAsked(ByVal i As Integer)
+        Me.floorAsked = i
+    End Sub
+
+
 
     Private Sub ConnectToServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectToServer.Click
         If Not clientIsRunning Then
@@ -147,6 +156,8 @@ Public Class Elevator
 
 
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
+        Me.setFloorAsked(2)
+
         If serverIsRunning Then
             Me.SendMessageToClient(Encoding.ASCII.GetBytes("Coucou client !"))
         End If
@@ -159,23 +170,92 @@ Public Class Elevator
     Private Sub CoilTimer_Tick(sender As Object, e As EventArgs) Handles CoilTimer.Tick
 
         If (Me.ElevatorPhys.Top > Me.Panel2.Top And Me.CoilUP.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 1)
 
         End If
         If (Me.ElevatorPhys.Bottom < Me.Panel2.Bottom And Me.CoilDown.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 1)
         End If
+
+        Me.ChooseFloor(Me.floorAsked)
+
 
 
     End Sub
 
+    Private Sub ChooseFloor(ByVal floorChosen As Integer)
+        Select Case floorChosen
+            Case 0
+                Me.isOnFloor = False
+                If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y = Me.PositionSensor1.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.isOnFloor = True
+                    Me.setFloorAsked(4)
+                End If
+            Case 1
+                Me.isOnFloor = False
+                If Me.ElevatorPhys.Location.Y > Me.PositionSensor2.Location.Y + 3 Then
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.CoilUP.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y < Me.PositionSensor2.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y = Me.PositionSensor2.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.isOnFloor = True
+                    Me.setFloorAsked(4)
+                End If
+            Case 2
+                Me.isOnFloor = False
+                If Me.ElevatorPhys.Location.Y > Me.PositionSensor3.Location.Y + 3 Then
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.CoilUP.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y < Me.PositionSensor3.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y = Me.PositionSensor3.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.isOnFloor = True
+                    Me.setFloorAsked(4)
+                End If
+            Case 3
+                Me.isOnFloor = False
+                If Me.ElevatorPhys.Location.Y > Me.PositionSensor4.Location.Y + 3 Then
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.CoilUP.CheckState = CheckState.Checked
+                End If
+                If Me.ElevatorPhys.Location.Y = Me.PositionSensor4.Location.Y + 3 Then
+                    Me.CoilUP.CheckState = CheckState.Unchecked
+                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    Me.isOnFloor = True
+                    Me.setFloorAsked(4)
+                End If
+            Case 4 'Aucun étage n'est appelé'
+                Me.isOnFloor = True
+        End Select
+
+    End Sub
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
-        If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y Then
-            Me.CoilUP.CheckState = CheckState.Unchecked
-            Me.CoilDown.CheckState = CheckState.Checked
-        End If
-        ' Me.CoilDown.CheckState = CheckState.Unchecked
+        Me.setFloorAsked(0)
     End Sub
 
+    Private Sub ButtonCallFloor3_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor3.Click
+        Me.setFloorAsked(3)
+    End Sub
+
+    Private Sub ButtonCallFloor1_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor1.Click
+        Me.setFloorAsked(1)
+    End Sub
 End Class

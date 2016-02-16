@@ -32,7 +32,6 @@ Partial Class Elevator
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Elevator))
         Me.ConnectToServer = New System.Windows.Forms.Button()
@@ -110,10 +109,10 @@ Partial Class Elevator
         '
         Me.LabelConnexion.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelConnexion.AutoSize = True
-        Me.LabelConnexion.Font = New System.Drawing.Font("Elephant", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelConnexion.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelConnexion.Location = New System.Drawing.Point(1, 0)
         Me.LabelConnexion.Name = "LabelConnexion"
-        Me.LabelConnexion.Size = New System.Drawing.Size(129, 25)
+        Me.LabelConnexion.Size = New System.Drawing.Size(117, 24)
         Me.LabelConnexion.TabIndex = 2
         Me.LabelConnexion.Text = "Connection"
         '
@@ -306,10 +305,10 @@ Partial Class Elevator
         '
         Me.LabelSensors.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelSensors.AutoSize = True
-        Me.LabelSensors.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelSensors.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelSensors.Location = New System.Drawing.Point(3, 0)
         Me.LabelSensors.Name = "LabelSensors"
-        Me.LabelSensors.Size = New System.Drawing.Size(145, 21)
+        Me.LabelSensors.Size = New System.Drawing.Size(131, 20)
         Me.LabelSensors.TabIndex = 3
         Me.LabelSensors.Text = "Sensors/Inputs"
         '
@@ -359,10 +358,10 @@ Partial Class Elevator
         '
         Me.LabelCoils.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelCoils.AutoSize = True
-        Me.LabelCoils.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelCoils.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelCoils.Location = New System.Drawing.Point(8, 0)
         Me.LabelCoils.Name = "LabelCoils"
-        Me.LabelCoils.Size = New System.Drawing.Size(134, 21)
+        Me.LabelCoils.Size = New System.Drawing.Size(117, 20)
         Me.LabelCoils.TabIndex = 3
         Me.LabelCoils.Text = "Coils/Outputs"
         '
@@ -387,7 +386,7 @@ Partial Class Elevator
         'CoilTimer
         '
         Me.CoilTimer.Enabled = True
-        Me.CoilTimer.Interval = 200
+        Me.CoilTimer.Interval = 25
         '
         'Elevator
         '
