@@ -159,15 +159,16 @@ Public Class Elevator
     Private Sub CoilTimer_Tick(sender As Object, e As EventArgs) Handles CoilTimer.Tick
 
         If (Me.ElevatorPhys.Top > Me.Panel2.Top And Me.CoilUP.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 2)
 
         End If
         If (Me.ElevatorPhys.Bottom < Me.Panel2.Bottom And Me.CoilDown.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 2)
         End If
 
 
     End Sub
+
 
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
@@ -178,4 +179,15 @@ Public Class Elevator
         ' Me.CoilDown.CheckState = CheckState.Unchecked
     End Sub
 
+    
+
+
+
+    Private Sub CoilDown_CheckStateChanged(sender As Object, e As EventArgs) Handles CoilDown.CheckStateChanged
+        Me.CoilUP.CheckState = CheckState.Unchecked
+    End Sub
+
+    Private Sub CoilUP_CheckStateChanged_1(sender As Object, e As EventArgs) Handles CoilUP.CheckStateChanged
+        Me.CoilDown.CheckState = CheckState.Unchecked
+    End Sub
 End Class
