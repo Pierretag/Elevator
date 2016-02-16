@@ -32,7 +32,6 @@ Partial Class Elevator
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Elevator))
         Me.ConnectToServer = New System.Windows.Forms.Button()
@@ -78,9 +77,10 @@ Partial Class Elevator
         'ConnectToServer
         '
         Me.ConnectToServer.ForeColor = System.Drawing.Color.Red
-        Me.ConnectToServer.Location = New System.Drawing.Point(23, 37)
+        Me.ConnectToServer.Location = New System.Drawing.Point(34, 57)
+        Me.ConnectToServer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ConnectToServer.Name = "ConnectToServer"
-        Me.ConnectToServer.Size = New System.Drawing.Size(77, 37)
+        Me.ConnectToServer.Size = New System.Drawing.Size(116, 57)
         Me.ConnectToServer.TabIndex = 0
         Me.ConnectToServer.Text = "Connect to the Server"
         Me.ConnectToServer.UseVisualStyleBackColor = True
@@ -88,9 +88,10 @@ Partial Class Elevator
         'LauchServer
         '
         Me.LauchServer.ForeColor = System.Drawing.Color.Red
-        Me.LauchServer.Location = New System.Drawing.Point(23, 80)
+        Me.LauchServer.Location = New System.Drawing.Point(34, 123)
+        Me.LauchServer.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LauchServer.Name = "LauchServer"
-        Me.LauchServer.Size = New System.Drawing.Size(77, 38)
+        Me.LauchServer.Size = New System.Drawing.Size(116, 58)
         Me.LauchServer.TabIndex = 1
         Me.LauchServer.Text = "Launch the Server"
         Me.LauchServer.UseVisualStyleBackColor = True
@@ -101,9 +102,10 @@ Partial Class Elevator
         Me.PanelConnexion.Controls.Add(Me.LabelConnexion)
         Me.PanelConnexion.Controls.Add(Me.LauchServer)
         Me.PanelConnexion.Controls.Add(Me.ConnectToServer)
-        Me.PanelConnexion.Location = New System.Drawing.Point(641, 12)
+        Me.PanelConnexion.Location = New System.Drawing.Point(962, 18)
+        Me.PanelConnexion.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PanelConnexion.Name = "PanelConnexion"
-        Me.PanelConnexion.Size = New System.Drawing.Size(132, 134)
+        Me.PanelConnexion.Size = New System.Drawing.Size(196, 204)
         Me.PanelConnexion.TabIndex = 2
         '
         'LabelConnexion
@@ -111,89 +113,99 @@ Partial Class Elevator
         Me.LabelConnexion.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelConnexion.AutoSize = True
         Me.LabelConnexion.Font = New System.Drawing.Font("Elephant", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelConnexion.Location = New System.Drawing.Point(1, 0)
+        Me.LabelConnexion.Location = New System.Drawing.Point(2, 0)
+        Me.LabelConnexion.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelConnexion.Name = "LabelConnexion"
-        Me.LabelConnexion.Size = New System.Drawing.Size(129, 25)
+        Me.LabelConnexion.Size = New System.Drawing.Size(193, 38)
         Me.LabelConnexion.TabIndex = 2
         Me.LabelConnexion.Text = "Connection"
         '
         'PictureBox1
         '
         Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(12, 12)
+        Me.PictureBox1.Location = New System.Drawing.Point(18, 18)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(245, 222)
+        Me.PictureBox1.Size = New System.Drawing.Size(368, 342)
         Me.PictureBox1.TabIndex = 6
         Me.PictureBox1.TabStop = False
         '
         'PositionSensor3
         '
         Me.PositionSensor3.AutoSize = True
-        Me.PositionSensor3.Location = New System.Drawing.Point(265, 175)
+        Me.PositionSensor3.Location = New System.Drawing.Point(398, 269)
+        Me.PositionSensor3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.PositionSensor3.Name = "PositionSensor3"
-        Me.PositionSensor3.Size = New System.Drawing.Size(78, 13)
+        Me.PositionSensor3.Size = New System.Drawing.Size(114, 20)
         Me.PositionSensor3.TabIndex = 11
         Me.PositionSensor3.Text = "Sensor/Input 3"
         '
         'PositionSensor2
         '
         Me.PositionSensor2.AutoSize = True
-        Me.PositionSensor2.Location = New System.Drawing.Point(265, 325)
+        Me.PositionSensor2.Location = New System.Drawing.Point(398, 500)
+        Me.PositionSensor2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.PositionSensor2.Name = "PositionSensor2"
-        Me.PositionSensor2.Size = New System.Drawing.Size(78, 13)
+        Me.PositionSensor2.Size = New System.Drawing.Size(114, 20)
         Me.PositionSensor2.TabIndex = 12
         Me.PositionSensor2.Text = "Sensor/Input 2"
         '
         'PositionSensor1
         '
         Me.PositionSensor1.AutoSize = True
-        Me.PositionSensor1.Location = New System.Drawing.Point(265, 475)
+        Me.PositionSensor1.Location = New System.Drawing.Point(398, 731)
+        Me.PositionSensor1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.PositionSensor1.Name = "PositionSensor1"
-        Me.PositionSensor1.Size = New System.Drawing.Size(78, 13)
+        Me.PositionSensor1.Size = New System.Drawing.Size(114, 20)
         Me.PositionSensor1.TabIndex = 13
         Me.PositionSensor1.Text = "Sensor/Input 1"
         '
         'PositionSensor0
         '
         Me.PositionSensor0.AutoSize = True
-        Me.PositionSensor0.Location = New System.Drawing.Point(265, 625)
+        Me.PositionSensor0.Location = New System.Drawing.Point(398, 962)
+        Me.PositionSensor0.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.PositionSensor0.Name = "PositionSensor0"
-        Me.PositionSensor0.Size = New System.Drawing.Size(78, 13)
+        Me.PositionSensor0.Size = New System.Drawing.Size(114, 20)
         Me.PositionSensor0.TabIndex = 14
         Me.PositionSensor0.Text = "Sensor/Input 0"
         '
         'ButtonCallFloor3
         '
-        Me.ButtonCallFloor3.Location = New System.Drawing.Point(510, 85)
+        Me.ButtonCallFloor3.Location = New System.Drawing.Point(765, 131)
+        Me.ButtonCallFloor3.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ButtonCallFloor3.Name = "ButtonCallFloor3"
-        Me.ButtonCallFloor3.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonCallFloor3.Size = New System.Drawing.Size(112, 35)
         Me.ButtonCallFloor3.TabIndex = 15
         Me.ButtonCallFloor3.Text = "Call Floor 3"
         Me.ButtonCallFloor3.UseVisualStyleBackColor = True
         '
         'ButtonCallFloor2
         '
-        Me.ButtonCallFloor2.Location = New System.Drawing.Point(510, 235)
+        Me.ButtonCallFloor2.Location = New System.Drawing.Point(765, 362)
+        Me.ButtonCallFloor2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ButtonCallFloor2.Name = "ButtonCallFloor2"
-        Me.ButtonCallFloor2.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonCallFloor2.Size = New System.Drawing.Size(112, 35)
         Me.ButtonCallFloor2.TabIndex = 16
         Me.ButtonCallFloor2.Text = "Call Floor 2"
         Me.ButtonCallFloor2.UseVisualStyleBackColor = True
         '
         'ButtonCallFloor1
         '
-        Me.ButtonCallFloor1.Location = New System.Drawing.Point(510, 385)
+        Me.ButtonCallFloor1.Location = New System.Drawing.Point(765, 592)
+        Me.ButtonCallFloor1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ButtonCallFloor1.Name = "ButtonCallFloor1"
-        Me.ButtonCallFloor1.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonCallFloor1.Size = New System.Drawing.Size(112, 35)
         Me.ButtonCallFloor1.TabIndex = 17
         Me.ButtonCallFloor1.Text = "Call Floor 1"
         Me.ButtonCallFloor1.UseVisualStyleBackColor = True
         '
         'ButtonCallFloor0
         '
-        Me.ButtonCallFloor0.Location = New System.Drawing.Point(510, 535)
+        Me.ButtonCallFloor0.Location = New System.Drawing.Point(765, 823)
+        Me.ButtonCallFloor0.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ButtonCallFloor0.Name = "ButtonCallFloor0"
-        Me.ButtonCallFloor0.Size = New System.Drawing.Size(75, 23)
+        Me.ButtonCallFloor0.Size = New System.Drawing.Size(112, 35)
         Me.ButtonCallFloor0.TabIndex = 18
         Me.ButtonCallFloor0.Text = "Call Floor 0"
         Me.ButtonCallFloor0.UseVisualStyleBackColor = True
@@ -212,94 +224,105 @@ Partial Class Elevator
         Me.PanelSensors.Controls.Add(Me.LedSensor1)
         Me.PanelSensors.Controls.Add(Me.LedSensor0)
         Me.PanelSensors.Controls.Add(Me.LabelSensors)
-        Me.PanelSensors.Location = New System.Drawing.Point(26, 277)
+        Me.PanelSensors.Location = New System.Drawing.Point(39, 426)
+        Me.PanelSensors.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.PanelSensors.Name = "PanelSensors"
-        Me.PanelSensors.Size = New System.Drawing.Size(155, 77)
+        Me.PanelSensors.Size = New System.Drawing.Size(230, 116)
         Me.PanelSensors.TabIndex = 19
         '
         'LabelLedSensor4
         '
         Me.LabelLedSensor4.AutoSize = True
-        Me.LabelLedSensor4.Location = New System.Drawing.Point(121, 33)
+        Me.LabelLedSensor4.Location = New System.Drawing.Point(182, 51)
+        Me.LabelLedSensor4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelLedSensor4.Name = "LabelLedSensor4"
-        Me.LabelLedSensor4.Size = New System.Drawing.Size(13, 13)
+        Me.LabelLedSensor4.Size = New System.Drawing.Size(18, 20)
         Me.LabelLedSensor4.TabIndex = 13
         Me.LabelLedSensor4.Text = "4"
         '
         'LedSensor4
         '
         Me.LedSensor4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LedSensor4.Location = New System.Drawing.Point(118, 49)
+        Me.LedSensor4.Location = New System.Drawing.Point(177, 75)
+        Me.LedSensor4.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LedSensor4.Name = "LedSensor4"
-        Me.LedSensor4.Size = New System.Drawing.Size(20, 20)
+        Me.LedSensor4.Size = New System.Drawing.Size(29, 30)
         Me.LedSensor4.TabIndex = 12
         '
         'LabelLedSensor3
         '
         Me.LabelLedSensor3.AutoSize = True
-        Me.LabelLedSensor3.Location = New System.Drawing.Point(96, 33)
+        Me.LabelLedSensor3.Location = New System.Drawing.Point(144, 51)
+        Me.LabelLedSensor3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelLedSensor3.Name = "LabelLedSensor3"
-        Me.LabelLedSensor3.Size = New System.Drawing.Size(13, 13)
+        Me.LabelLedSensor3.Size = New System.Drawing.Size(18, 20)
         Me.LabelLedSensor3.TabIndex = 11
         Me.LabelLedSensor3.Text = "3"
         '
         'LabelLedSensor2
         '
         Me.LabelLedSensor2.AutoSize = True
-        Me.LabelLedSensor2.Location = New System.Drawing.Point(70, 33)
+        Me.LabelLedSensor2.Location = New System.Drawing.Point(105, 51)
+        Me.LabelLedSensor2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelLedSensor2.Name = "LabelLedSensor2"
-        Me.LabelLedSensor2.Size = New System.Drawing.Size(13, 13)
+        Me.LabelLedSensor2.Size = New System.Drawing.Size(18, 20)
         Me.LabelLedSensor2.TabIndex = 10
         Me.LabelLedSensor2.Text = "2"
         '
         'LabelLedSensor1
         '
         Me.LabelLedSensor1.AutoSize = True
-        Me.LabelLedSensor1.Location = New System.Drawing.Point(44, 33)
+        Me.LabelLedSensor1.Location = New System.Drawing.Point(66, 51)
+        Me.LabelLedSensor1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelLedSensor1.Name = "LabelLedSensor1"
-        Me.LabelLedSensor1.Size = New System.Drawing.Size(13, 13)
+        Me.LabelLedSensor1.Size = New System.Drawing.Size(18, 20)
         Me.LabelLedSensor1.TabIndex = 9
         Me.LabelLedSensor1.Text = "1"
         '
         'LabelLedSensor0
         '
         Me.LabelLedSensor0.AutoSize = True
-        Me.LabelLedSensor0.Location = New System.Drawing.Point(18, 33)
+        Me.LabelLedSensor0.Location = New System.Drawing.Point(27, 51)
+        Me.LabelLedSensor0.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelLedSensor0.Name = "LabelLedSensor0"
-        Me.LabelLedSensor0.Size = New System.Drawing.Size(13, 13)
+        Me.LabelLedSensor0.Size = New System.Drawing.Size(18, 20)
         Me.LabelLedSensor0.TabIndex = 8
         Me.LabelLedSensor0.Text = "0"
         '
         'LedSensor3
         '
         Me.LedSensor3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LedSensor3.Location = New System.Drawing.Point(93, 49)
+        Me.LedSensor3.Location = New System.Drawing.Point(140, 75)
+        Me.LedSensor3.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LedSensor3.Name = "LedSensor3"
-        Me.LedSensor3.Size = New System.Drawing.Size(20, 20)
+        Me.LedSensor3.Size = New System.Drawing.Size(29, 30)
         Me.LedSensor3.TabIndex = 7
         '
         'LedSensor2
         '
         Me.LedSensor2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LedSensor2.Location = New System.Drawing.Point(67, 49)
+        Me.LedSensor2.Location = New System.Drawing.Point(100, 75)
+        Me.LedSensor2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LedSensor2.Name = "LedSensor2"
-        Me.LedSensor2.Size = New System.Drawing.Size(20, 20)
+        Me.LedSensor2.Size = New System.Drawing.Size(29, 30)
         Me.LedSensor2.TabIndex = 6
         '
         'LedSensor1
         '
         Me.LedSensor1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LedSensor1.Location = New System.Drawing.Point(41, 49)
+        Me.LedSensor1.Location = New System.Drawing.Point(62, 75)
+        Me.LedSensor1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LedSensor1.Name = "LedSensor1"
-        Me.LedSensor1.Size = New System.Drawing.Size(20, 20)
+        Me.LedSensor1.Size = New System.Drawing.Size(29, 30)
         Me.LedSensor1.TabIndex = 5
         '
         'LedSensor0
         '
         Me.LedSensor0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.LedSensor0.Location = New System.Drawing.Point(15, 49)
+        Me.LedSensor0.Location = New System.Drawing.Point(22, 75)
+        Me.LedSensor0.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.LedSensor0.Name = "LedSensor0"
-        Me.LedSensor0.Size = New System.Drawing.Size(20, 20)
+        Me.LedSensor0.Size = New System.Drawing.Size(29, 30)
         Me.LedSensor0.TabIndex = 4
         '
         'LabelSensors
@@ -307,9 +330,10 @@ Partial Class Elevator
         Me.LabelSensors.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelSensors.AutoSize = True
         Me.LabelSensors.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelSensors.Location = New System.Drawing.Point(3, 0)
+        Me.LabelSensors.Location = New System.Drawing.Point(4, 0)
+        Me.LabelSensors.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelSensors.Name = "LabelSensors"
-        Me.LabelSensors.Size = New System.Drawing.Size(145, 21)
+        Me.LabelSensors.Size = New System.Drawing.Size(215, 31)
         Me.LabelSensors.TabIndex = 3
         Me.LabelSensors.Text = "Sensors/Inputs"
         '
@@ -318,9 +342,10 @@ Partial Class Elevator
         Me.ElevatorPhys.BackColor = System.Drawing.SystemColors.Control
         Me.ElevatorPhys.BackgroundImage = CType(resources.GetObject("ElevatorPhys.BackgroundImage"), System.Drawing.Image)
         Me.ElevatorPhys.InitialImage = CType(resources.GetObject("ElevatorPhys.InitialImage"), System.Drawing.Image)
-        Me.ElevatorPhys.Location = New System.Drawing.Point(355, 505)
+        Me.ElevatorPhys.Location = New System.Drawing.Point(532, 777)
+        Me.ElevatorPhys.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.ElevatorPhys.Name = "ElevatorPhys"
-        Me.ElevatorPhys.Size = New System.Drawing.Size(140, 140)
+        Me.ElevatorPhys.Size = New System.Drawing.Size(210, 215)
         Me.ElevatorPhys.TabIndex = 21
         Me.ElevatorPhys.TabStop = False
         '
@@ -330,17 +355,19 @@ Partial Class Elevator
         Me.Panel1.Controls.Add(Me.CoilDown)
         Me.Panel1.Controls.Add(Me.CoilUP)
         Me.Panel1.Controls.Add(Me.LabelCoils)
-        Me.Panel1.Location = New System.Drawing.Point(26, 385)
+        Me.Panel1.Location = New System.Drawing.Point(39, 592)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(155, 77)
+        Me.Panel1.Size = New System.Drawing.Size(230, 116)
         Me.Panel1.TabIndex = 20
         '
         'CoilDown
         '
         Me.CoilDown.AutoSize = True
-        Me.CoilDown.Location = New System.Drawing.Point(49, 48)
+        Me.CoilDown.Location = New System.Drawing.Point(74, 74)
+        Me.CoilDown.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.CoilDown.Name = "CoilDown"
-        Me.CoilDown.Size = New System.Drawing.Size(54, 17)
+        Me.CoilDown.Size = New System.Drawing.Size(76, 24)
         Me.CoilDown.TabIndex = 5
         Me.CoilDown.Text = "Down"
         Me.CoilDown.UseVisualStyleBackColor = True
@@ -348,9 +375,10 @@ Partial Class Elevator
         'CoilUP
         '
         Me.CoilUP.AutoSize = True
-        Me.CoilUP.Location = New System.Drawing.Point(49, 24)
+        Me.CoilUP.Location = New System.Drawing.Point(74, 37)
+        Me.CoilUP.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.CoilUP.Name = "CoilUP"
-        Me.CoilUP.Size = New System.Drawing.Size(41, 17)
+        Me.CoilUP.Size = New System.Drawing.Size(57, 24)
         Me.CoilUP.TabIndex = 4
         Me.CoilUP.Text = "UP"
         Me.CoilUP.UseVisualStyleBackColor = True
@@ -360,18 +388,20 @@ Partial Class Elevator
         Me.LabelCoils.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelCoils.AutoSize = True
         Me.LabelCoils.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LabelCoils.Location = New System.Drawing.Point(8, 0)
+        Me.LabelCoils.Location = New System.Drawing.Point(12, 0)
+        Me.LabelCoils.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LabelCoils.Name = "LabelCoils"
-        Me.LabelCoils.Size = New System.Drawing.Size(134, 21)
+        Me.LabelCoils.Size = New System.Drawing.Size(198, 31)
         Me.LabelCoils.TabIndex = 3
         Me.LabelCoils.Text = "Coils/Outputs"
         '
         'PositionSensor4
         '
         Me.PositionSensor4.AutoSize = True
-        Me.PositionSensor4.Location = New System.Drawing.Point(265, 25)
+        Me.PositionSensor4.Location = New System.Drawing.Point(398, 38)
+        Me.PositionSensor4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.PositionSensor4.Name = "PositionSensor4"
-        Me.PositionSensor4.Size = New System.Drawing.Size(78, 13)
+        Me.PositionSensor4.Size = New System.Drawing.Size(114, 20)
         Me.PositionSensor4.TabIndex = 22
         Me.PositionSensor4.Text = "Sensor/Input 4"
         '
@@ -379,21 +409,22 @@ Partial Class Elevator
         '
         Me.Panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
         Me.Panel2.ForeColor = System.Drawing.SystemColors.ButtonShadow
-        Me.Panel2.Location = New System.Drawing.Point(344, 14)
+        Me.Panel2.Location = New System.Drawing.Point(516, 22)
+        Me.Panel2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(162, 629)
+        Me.Panel2.Size = New System.Drawing.Size(241, 966)
         Me.Panel2.TabIndex = 23
         '
         'CoilTimer
         '
         Me.CoilTimer.Enabled = True
-        Me.CoilTimer.Interval = 200
+        Me.CoilTimer.Interval = 25
         '
         'Elevator
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(787, 655)
+        Me.ClientSize = New System.Drawing.Size(1180, 1008)
         Me.Controls.Add(Me.PositionSensor4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ElevatorPhys)
@@ -409,6 +440,7 @@ Partial Class Elevator
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.PanelConnexion)
         Me.Controls.Add(Me.Panel2)
+        Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Name = "Elevator"
         Me.Text = "Elevator - RLI - TP3"
         Me.PanelConnexion.ResumeLayout(False)

@@ -159,16 +159,80 @@ Public Class Elevator
     Private Sub CoilTimer_Tick(sender As Object, e As EventArgs) Handles CoilTimer.Tick
 
         If (Me.ElevatorPhys.Top > Me.Panel2.Top And Me.CoilUP.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 1)
 
         End If
         If (Me.ElevatorPhys.Bottom < Me.Panel2.Bottom And Me.CoilDown.Checked = True) Then
-            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 4)
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 1)
         End If
 
-
+        If isOnFloor == false Then
+            BlinkLedSensor()
+        Else
+            ClearLedSensor()
+        End If
     End Sub
 
+    Private Enum E_Sensor
+        sensor0
+        sensor1
+        sensor2
+        sensor3
+        sensor4
+    End Enum
+
+    Dim currentSensor As E_Sensor
+    Dim oldSensor As E_Sensor
+
+    Private Sub CheckSensor()
+        Select Case Me.ElevatorPhys.Location.Y
+            Case Me.PositionSensor0.Location.Y
+                currentSensor = E_Sensor.sensor0
+            Case Me.PositionSensor1.Location.Y
+                currentSensor = E_Sensor.sensor1
+            Case Me.PositionSensor2.Location.Y
+                currentSensor = E_Sensor.sensor2
+            Case Me.PositionSensor3.Location.Y
+                currentSensor = E_Sensor.sensor3
+            Case Me.PositionSensor4.Location.Y
+                currentSensor = E_Sensor.sensor4
+        End Select
+    End Sub
+
+    Private Sub BlinkLedSensor()
+        CheckSensor()
+        If oldSensor <> currentSensor Then
+            ClearLedSensor()
+            Select Case currentSensor
+                Case E_Sensor.sensor0
+                    LedSensor0.BackColor = Color.Green
+                Case E_Sensor.sensor1
+                    LedSensor1.BackColor = Color.Green
+                Case E_Sensor.sensor2
+                    LedSensor2.BackColor = Color.Green
+                Case E_Sensor.sensor3
+                    LedSensor3.BackColor = Color.Green
+                Case E_Sensor.sensor4
+                    LedSensor4.BackColor = Color.Green
+            End Select
+        End If
+        oldSensor = currentSensor
+    End Sub
+
+    Private Sub ClearLedSensor()
+        Select Case oldSensor
+            Case E_Sensor.sensor0
+                LedSensor0.BackColor = Color.Transparent
+            Case E_Sensor.sensor1
+                LedSensor1.BackColor = Color.Transparent
+            Case E_Sensor.sensor2
+                LedSensor2.BackColor = Color.Transparent
+            Case E_Sensor.sensor3
+                LedSensor3.BackColor = Color.Transparent
+            Case E_Sensor.sensor4
+                LedSensor4.BackColor = Color.Transparent
+        End Select
+    End Sub
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
         If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y Then
