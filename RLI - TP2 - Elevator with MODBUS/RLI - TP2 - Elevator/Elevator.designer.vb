@@ -32,39 +32,41 @@ Partial Class Elevator
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Elevator))
-        Me.ConnectToServer = New System.Windows.Forms.Button
-        Me.LauchServer = New System.Windows.Forms.Button
-        Me.PanelConnexion = New System.Windows.Forms.Panel
-        Me.LabelConnexion = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PositionSensor3 = New System.Windows.Forms.Label
-        Me.PositionSensor2 = New System.Windows.Forms.Label
-        Me.PositionSensor1 = New System.Windows.Forms.Label
-        Me.PositionSensor0 = New System.Windows.Forms.Label
-        Me.ButtonCallFloor3 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor2 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor1 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor0 = New System.Windows.Forms.Button
-        Me.PanelSensors = New System.Windows.Forms.Panel
-        Me.LabelLedSensor4 = New System.Windows.Forms.Label
-        Me.LedSensor4 = New System.Windows.Forms.Panel
-        Me.LabelLedSensor3 = New System.Windows.Forms.Label
-        Me.LabelLedSensor2 = New System.Windows.Forms.Label
-        Me.LabelLedSensor1 = New System.Windows.Forms.Label
-        Me.LabelLedSensor0 = New System.Windows.Forms.Label
-        Me.LedSensor3 = New System.Windows.Forms.Panel
-        Me.LedSensor2 = New System.Windows.Forms.Panel
-        Me.LedSensor1 = New System.Windows.Forms.Panel
-        Me.LedSensor0 = New System.Windows.Forms.Panel
-        Me.LabelSensors = New System.Windows.Forms.Label
-        Me.ElevatorPhys = New System.Windows.Forms.PictureBox
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.CoilDown = New System.Windows.Forms.CheckBox
-        Me.CoilUP = New System.Windows.Forms.CheckBox
-        Me.LabelCoils = New System.Windows.Forms.Label
-        Me.PositionSensor4 = New System.Windows.Forms.Label
-        Me.Panel2 = New System.Windows.Forms.Panel
+        Me.ConnectToServer = New System.Windows.Forms.Button()
+        Me.LauchServer = New System.Windows.Forms.Button()
+        Me.PanelConnexion = New System.Windows.Forms.Panel()
+        Me.LabelConnexion = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PositionSensor3 = New System.Windows.Forms.Label()
+        Me.PositionSensor2 = New System.Windows.Forms.Label()
+        Me.PositionSensor1 = New System.Windows.Forms.Label()
+        Me.PositionSensor0 = New System.Windows.Forms.Label()
+        Me.ButtonCallFloor3 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor2 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor1 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor0 = New System.Windows.Forms.Button()
+        Me.PanelSensors = New System.Windows.Forms.Panel()
+        Me.LabelLedSensor4 = New System.Windows.Forms.Label()
+        Me.LedSensor4 = New System.Windows.Forms.Panel()
+        Me.LabelLedSensor3 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor2 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor1 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor0 = New System.Windows.Forms.Label()
+        Me.LedSensor3 = New System.Windows.Forms.Panel()
+        Me.LedSensor2 = New System.Windows.Forms.Panel()
+        Me.LedSensor1 = New System.Windows.Forms.Panel()
+        Me.LedSensor0 = New System.Windows.Forms.Panel()
+        Me.LabelSensors = New System.Windows.Forms.Label()
+        Me.ElevatorPhys = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.CoilDown = New System.Windows.Forms.CheckBox()
+        Me.CoilUP = New System.Windows.Forms.CheckBox()
+        Me.LabelCoils = New System.Windows.Forms.Label()
+        Me.PositionSensor4 = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.CoilTimer = New System.Windows.Forms.Timer(Me.components)
         Me.PanelConnexion.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelSensors.SuspendLayout()
@@ -381,6 +383,11 @@ Partial Class Elevator
         Me.Panel2.Size = New System.Drawing.Size(162, 629)
         Me.Panel2.TabIndex = 23
         '
+        'CoilTimer
+        '
+        Me.CoilTimer.Enabled = True
+        Me.CoilTimer.Interval = 200
+        '
         'Elevator
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -447,5 +454,6 @@ Partial Class Elevator
     Friend WithEvents Panel2 As System.Windows.Forms.Panel
     Public WithEvents CoilDown As System.Windows.Forms.CheckBox
     Friend WithEvents CoilUP As System.Windows.Forms.CheckBox
+    Friend WithEvents CoilTimer As System.Windows.Forms.Timer
 
 End Class

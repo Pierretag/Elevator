@@ -154,4 +154,17 @@ Public Class Elevator
             Me.SendMessageToServer(Encoding.ASCII.GetBytes("Coucou server !"))
         End If
     End Sub
+
+    Private Sub CoilTimer_Tick(sender As Object, e As EventArgs) Handles CoilTimer.Tick
+
+        If (Me.ElevatorPhys.Top > Me.Panel2.Top And Me.CoilUP.Checked = True) Then
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y - 4)
+
+        End If
+        If (Me.ElevatorPhys.Bottom < Me.Panel2.Bottom And Me.CoilDown.Checked = True) Then
+            Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 4)
+        End If
+
+
+    End Sub
 End Class
