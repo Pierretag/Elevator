@@ -33,38 +33,38 @@ Partial Class Elevator
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Elevator))
-        Me.ConnectToServer = New System.Windows.Forms.Button
-        Me.LauchServer = New System.Windows.Forms.Button
-        Me.PanelConnexion = New System.Windows.Forms.Panel
-        Me.LabelConnexion = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.PositionSensor3 = New System.Windows.Forms.Label
-        Me.PositionSensor2 = New System.Windows.Forms.Label
-        Me.PositionSensor1 = New System.Windows.Forms.Label
-        Me.PositionSensor0 = New System.Windows.Forms.Label
-        Me.ButtonCallFloor3 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor2 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor1 = New System.Windows.Forms.Button
-        Me.ButtonCallFloor0 = New System.Windows.Forms.Button
-        Me.PanelSensors = New System.Windows.Forms.Panel
-        Me.LabelLedSensor4 = New System.Windows.Forms.Label
-        Me.LedSensor4 = New System.Windows.Forms.Panel
-        Me.LabelLedSensor3 = New System.Windows.Forms.Label
-        Me.LabelLedSensor2 = New System.Windows.Forms.Label
-        Me.LabelLedSensor1 = New System.Windows.Forms.Label
-        Me.LabelLedSensor0 = New System.Windows.Forms.Label
-        Me.LedSensor3 = New System.Windows.Forms.Panel
-        Me.LedSensor2 = New System.Windows.Forms.Panel
-        Me.LedSensor1 = New System.Windows.Forms.Panel
-        Me.LedSensor0 = New System.Windows.Forms.Panel
-        Me.LabelSensors = New System.Windows.Forms.Label
-        Me.ElevatorPhys = New System.Windows.Forms.PictureBox
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.CoilDown = New System.Windows.Forms.CheckBox
-        Me.CoilUP = New System.Windows.Forms.CheckBox
-        Me.LabelCoils = New System.Windows.Forms.Label
-        Me.PositionSensor4 = New System.Windows.Forms.Label
-        Me.Panel2 = New System.Windows.Forms.Panel
+        Me.ConnectToServer = New System.Windows.Forms.Button()
+        Me.LauchServer = New System.Windows.Forms.Button()
+        Me.PanelConnexion = New System.Windows.Forms.Panel()
+        Me.LabelConnexion = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.PositionSensor3 = New System.Windows.Forms.Label()
+        Me.PositionSensor2 = New System.Windows.Forms.Label()
+        Me.PositionSensor1 = New System.Windows.Forms.Label()
+        Me.PositionSensor0 = New System.Windows.Forms.Label()
+        Me.ButtonCallFloor3 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor2 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor1 = New System.Windows.Forms.Button()
+        Me.ButtonCallFloor0 = New System.Windows.Forms.Button()
+        Me.PanelSensors = New System.Windows.Forms.Panel()
+        Me.LabelLedSensor4 = New System.Windows.Forms.Label()
+        Me.LedSensor4 = New System.Windows.Forms.Panel()
+        Me.LabelLedSensor3 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor2 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor1 = New System.Windows.Forms.Label()
+        Me.LabelLedSensor0 = New System.Windows.Forms.Label()
+        Me.LedSensor3 = New System.Windows.Forms.Panel()
+        Me.LedSensor2 = New System.Windows.Forms.Panel()
+        Me.LedSensor1 = New System.Windows.Forms.Panel()
+        Me.LedSensor0 = New System.Windows.Forms.Panel()
+        Me.LabelSensors = New System.Windows.Forms.Label()
+        Me.ElevatorPhys = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.CoilDown = New System.Windows.Forms.CheckBox()
+        Me.CoilUP = New System.Windows.Forms.CheckBox()
+        Me.LabelCoils = New System.Windows.Forms.Label()
+        Me.PositionSensor4 = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
         Me.PanelConnexion.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelSensors.SuspendLayout()
@@ -107,10 +107,10 @@ Partial Class Elevator
         '
         Me.LabelConnexion.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelConnexion.AutoSize = True
-        Me.LabelConnexion.Font = New System.Drawing.Font("Elephant", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelConnexion.Font = New System.Drawing.Font("Microsoft Sans Serif", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelConnexion.Location = New System.Drawing.Point(1, 0)
         Me.LabelConnexion.Name = "LabelConnexion"
-        Me.LabelConnexion.Size = New System.Drawing.Size(129, 25)
+        Me.LabelConnexion.Size = New System.Drawing.Size(117, 24)
         Me.LabelConnexion.TabIndex = 2
         Me.LabelConnexion.Text = "Connection"
         '
@@ -303,10 +303,10 @@ Partial Class Elevator
         '
         Me.LabelSensors.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelSensors.AutoSize = True
-        Me.LabelSensors.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelSensors.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelSensors.Location = New System.Drawing.Point(3, 0)
         Me.LabelSensors.Name = "LabelSensors"
-        Me.LabelSensors.Size = New System.Drawing.Size(145, 21)
+        Me.LabelSensors.Size = New System.Drawing.Size(131, 20)
         Me.LabelSensors.TabIndex = 3
         Me.LabelSensors.Text = "Sensors/Inputs"
         '
@@ -356,10 +356,10 @@ Partial Class Elevator
         '
         Me.LabelCoils.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.LabelCoils.AutoSize = True
-        Me.LabelCoils.Font = New System.Drawing.Font("Elephant", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LabelCoils.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LabelCoils.Location = New System.Drawing.Point(8, 0)
         Me.LabelCoils.Name = "LabelCoils"
-        Me.LabelCoils.Size = New System.Drawing.Size(134, 21)
+        Me.LabelCoils.Size = New System.Drawing.Size(117, 20)
         Me.LabelCoils.TabIndex = 3
         Me.LabelCoils.Text = "Coils/Outputs"
         '

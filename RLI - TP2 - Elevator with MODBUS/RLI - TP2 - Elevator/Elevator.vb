@@ -154,4 +154,11 @@ Public Class Elevator
             Me.SendMessageToServer(Encoding.ASCII.GetBytes("Coucou server !"))
         End If
     End Sub
+
+    Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
+        While Me.ElevatorPhys.Location.Y > Me.PositionSensor1.Location.Y
+            Me.CoilDown.CheckState = CheckState.Checked
+        End While
+        Me.CoilDown.CheckState = CheckState.Unchecked
+    End Sub
 End Class
