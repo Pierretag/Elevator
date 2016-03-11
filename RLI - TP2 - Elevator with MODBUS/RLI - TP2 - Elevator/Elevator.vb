@@ -58,7 +58,7 @@ Public Class Elevator
             Me.LauchServer.ForeColor = System.Drawing.Color.Green
             Me.LauchServer.Text = "Stop the Server"
         Else
-            
+
             Me.server.Hide()
             Me.serverIsRunning = False
             Me.LauchServer.ForeColor = System.Drawing.Color.Red
@@ -132,14 +132,28 @@ Public Class Elevator
     Private Sub ReceivedDataFromServer(ByVal sender As Object, ByVal e As AsyncEventArgs)
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        MessageBox.Show("Server says :" + Encoding.ASCII.GetString(e.ReceivedBytes), "I am Client")
+        Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
+        MessageBox.Show("Server says :" + Msg, "I am Client")
+        Select Case Msg
+            Case "UpdateSensor"
+                SendCurrentSensor()
+            Case "UpdateCoils"
 
+        End Select
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
 
 
+    Private Sub SendCoilsToServer()
+        If CoilUP.Checked Then
+            SendMessageToServer(Encoding.ASCII.GetBytes("UP"))
+        End If
+        If CoilDown.Checked Then
+            SendMessageToServer(Encoding.ASCII.GetBytes("DOWN"))
+        End If
+    End Sub
 
 
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
@@ -177,6 +191,7 @@ Public Class Elevator
             ClearLedSensor()
         End If
     End Sub
+
 
     Private Enum E_Sensor
         sensor0
@@ -221,6 +236,7 @@ Public Class Elevator
                 Case E_Sensor.sensor4
                     LedSensor4.BackColor = Color.Green
             End Select
+            SendCurrentSensor()
         End If
         oldSensor = currentSensor
     End Sub
@@ -238,6 +254,10 @@ Public Class Elevator
             Case E_Sensor.sensor4
                 LedSensor4.BackColor = Color.Transparent
         End Select
+
+    End Sub
+
+    Private Sub SendCurrentSensor()
         If clientIsRunning Then
             Me.SendMessageToServer(Encoding.ASCII.GetBytes(currentSensor.ToString))
         End If

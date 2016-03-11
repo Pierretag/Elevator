@@ -6,6 +6,15 @@ Imports System.Text
 Public Class Server
 
     Dim _socket As AsynchronousServer
+    Dim currentSensor As E_Sensor
+    Dim oldSensor As E_Sensor
+    Private Enum E_Sensor
+        sensor0
+        sensor1
+        sensor2
+        sensor3
+        sensor4
+    End Enum
 
 
     Private Sub Server_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -49,22 +58,67 @@ Public Class Server
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
         Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
+        BlinkLedSensor(Msg)
 
-        Select Case Msg
-            Case "sensor0"
-                LedSensor0.BackColor = Color.Green
-            Case "sensor1"
-                LedSensor1.BackColor = Color.Green
-            Case "sensor2"
-                LedSensor2.BackColor = Color.Green
-            Case "sensor3"
-                LedSensor3.BackColor = Color.Green
-            Case Else
-                MessageBox.Show("Client says :" + Msg, "  OK ")
-        End Select
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
+
+    
+
+    Private Sub CheckSensor(ByVal Msg As String)
+        Select Case Msg
+            Case "sensor0"
+                currentSensor = E_Sensor.sensor0
+            Case "sensor1"
+                currentSensor = E_Sensor.sensor1
+            Case "sensor2"
+                currentSensor = E_Sensor.sensor2
+            Case "sensor3"
+                currentSensor = E_Sensor.sensor3
+            Case "sensor4"
+                currentSensor = E_Sensor.sensor4
+        End Select
+    End Sub
+
+    Private Sub BlinkLedSensor(ByVal Msg As String)
+        CheckSensor(Msg)
+        If oldSensor <> currentSensor Then
+            ClearLedSensor()
+            Select Case currentSensor
+                Case E_Sensor.sensor0
+                    LedSensor0.BackColor = Color.Green
+                Case E_Sensor.sensor1
+                    LedSensor1.BackColor = Color.Green
+                Case E_Sensor.sensor2
+                    LedSensor2.BackColor = Color.Green
+                Case E_Sensor.sensor3
+                    LedSensor3.BackColor = Color.Green
+                Case E_Sensor.sensor4
+                    LedSensor4.BackColor = Color.Green
+            End Select
+        End If
+        oldSensor = currentSensor
+    End Sub
+
+    Private Sub ClearLedSensor()
+        Select Case oldSensor
+            Case E_Sensor.sensor0
+                LedSensor0.BackColor = Color.Transparent
+            Case E_Sensor.sensor1
+                LedSensor1.BackColor = Color.Transparent
+            Case E_Sensor.sensor2
+                LedSensor2.BackColor = Color.Transparent
+            Case E_Sensor.sensor3
+                LedSensor3.BackColor = Color.Transparent
+            Case E_Sensor.sensor4
+                LedSensor4.BackColor = Color.Transparent
+        End Select
+
+    End Sub
+
+
+    
 
 End Class
