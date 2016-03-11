@@ -7,6 +7,7 @@ Public Class Elevator
     Public Shared ServerName As String = "localhost"
     Private serverIsRunning As Boolean = False
     Private clientIsRunning As Boolean = False
+    Public server As Server
     Public floorAsked As Integer
     Dim isOnFloor As Boolean
 
@@ -47,17 +48,16 @@ Public Class Elevator
 
     Private Sub LauchServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LauchServer.Click
         If Not serverIsRunning Then
-            Me._socket = New AsynchronousServer()
-            Me._socket.AttachReceiveCallBack(AddressOf ReceivedDataFromClient)
-            TryCast(_socket, AsynchronousServer).RunServer()
+            Me.server = New Server()
+            Me.server.Show()
+
 
             Me.serverIsRunning = True
             Me.LauchServer.ForeColor = System.Drawing.Color.Green
             Me.LauchServer.Text = "Stop the Server"
         Else
-            If _socket IsNot Nothing Then
-                _socket.Close()
-            End If
+            
+            Me.server.Hide()
             Me.serverIsRunning = False
             Me.LauchServer.ForeColor = System.Drawing.Color.Red
             Me.LauchServer.Text = "Launch the Server"
@@ -77,13 +77,7 @@ Public Class Elevator
         End If
     End Sub
 
-    Public Sub SendMessageToClient(ByVal msg As Byte())
-        If _socket IsNot Nothing Then
-            If TryCast(_socket, AsynchronousServer) IsNot Nothing Then
-                Me._socket.SendMessage(msg)
-            End If
-        End If
-    End Sub
+
 
     Public Sub SendMessageToServer(ByVal msg As Byte())
         If _socket IsNot Nothing Then
@@ -143,15 +137,6 @@ Public Class Elevator
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
 
-    Private Sub ReceivedDataFromClient(ByVal sender As Object, ByVal e As AsyncEventArgs)
-        'Add some stuff to interpret messages (and remove the next line!)
-        'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        MessageBox.Show("Client says :" + Encoding.ASCII.GetString(e.ReceivedBytes), "I am Server")
-
-        'BE CAREFUL!! 
-        'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
-        'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
-    End Sub
 
 
 
@@ -159,7 +144,7 @@ Public Class Elevator
         Me.setFloorAsked(2)
 
         If serverIsRunning Then
-            Me.SendMessageToClient(Encoding.ASCII.GetBytes("Coucou client !"))
+            'Me.SendMessageToClient(Encoding.ASCII.GetBytes("Coucou client !"))
         End If
         If clientIsRunning Then
             Me.SendMessageToServer(Encoding.ASCII.GetBytes("Coucou server !"))
@@ -211,6 +196,7 @@ Public Class Elevator
             Case Me.PositionSensor4.Location.Y
                 currentSensor = E_Sensor.sensor4
         End Select
+
     End Sub
 
     Private Sub BlinkLedSensor()
@@ -246,6 +232,9 @@ Public Class Elevator
             Case E_Sensor.sensor4
                 LedSensor4.BackColor = Color.Transparent
         End Select
+        If clientIsRunning Then
+            Me.SendMessageToServer(Encoding.ASCII.GetBytes(currentSensor.ToString))
+        End If
     End Sub
 
     Private Sub ChooseFloor(ByVal floorChosen As Integer)
@@ -337,5 +326,7 @@ Public Class Elevator
     Private Sub ButtonCallFloor1_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor1.Click
         Me.setFloorAsked(1)
     End Sub
+
+
 
 End Class
