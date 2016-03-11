@@ -7,6 +7,7 @@ Public Class Elevator
     Public Shared ServerName As String = "localhost"
     Private serverIsRunning As Boolean = False
     Private clientIsRunning As Boolean = False
+    Public server As Server
     Public floorAsked As Integer
     Private floorAsked2 As E_Floor
     Private FloorCalled As List(Of E_Floor) = New List(Of E_Floor)
@@ -47,17 +48,16 @@ Public Class Elevator
 
     Private Sub LauchServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles LauchServer.Click
         If Not serverIsRunning Then
-            Me._socket = New AsynchronousServer()
-            Me._socket.AttachReceiveCallBack(AddressOf ReceivedDataFromClient)
-            TryCast(_socket, AsynchronousServer).RunServer()
+            Me.server = New Server()
+            Me.server.Show()
+
 
             Me.serverIsRunning = True
             Me.LauchServer.ForeColor = System.Drawing.Color.Green
             Me.LauchServer.Text = "Stop the Server"
         Else
-            If _socket IsNot Nothing Then
-                _socket.Close()
-            End If
+
+            Me.server.Hide()
             Me.serverIsRunning = False
             Me.LauchServer.ForeColor = System.Drawing.Color.Red
             Me.LauchServer.Text = "Launch the Server"
@@ -77,13 +77,7 @@ Public Class Elevator
         End If
     End Sub
 
-    Public Sub SendMessageToClient(ByVal msg As Byte())
-        If _socket IsNot Nothing Then
-            If TryCast(_socket, AsynchronousServer) IsNot Nothing Then
-                Me._socket.SendMessage(msg)
-            End If
-        End If
-    End Sub
+
 
     Public Sub SendMessageToServer(ByVal msg As Byte())
         If _socket IsNot Nothing Then
@@ -130,28 +124,38 @@ Public Class Elevator
     Private Sub ReceivedDataFromServer(ByVal sender As Object, ByVal e As AsyncEventArgs)
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        MessageBox.Show("Server says :" + Encoding.ASCII.GetString(e.ReceivedBytes), "I am Client")
+        Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
+        MessageBox.Show("Server says :" + Msg, "I am Client")
+        Select Case Msg
+            Case "UpdateSensor"
+                SendCurrentSensor()
+            Case "UpdateCoils"
 
+        End Select
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
 
-    Private Sub ReceivedDataFromClient(ByVal sender As Object, ByVal e As AsyncEventArgs)
-        'Add some stuff to interpret messages (and remove the next line!)
-        'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        MessageBox.Show("Client says :" + Encoding.ASCII.GetString(e.ReceivedBytes), "I am Server")
 
-        'BE CAREFUL!! 
-        'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
-        'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
+    Private Sub SendCoilsToServer()
+        If CoilUP.Checked Then
+            SendMessageToServer(Encoding.ASCII.GetBytes("UP"))
+        End If
+        If CoilDown.Checked Then
+            SendMessageToServer(Encoding.ASCII.GetBytes("DOWN"))
+        End If
     End Sub
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
         Me.AddFloorToList(E_Floor.floor2)
 
         If serverIsRunning Then
-            Me.SendMessageToClient(Encoding.ASCII.GetBytes("Coucou client !"))
+            'Me.SendMessageToClient(Encoding.ASCII.GetBytes("Coucou client !"))
         End If
         If clientIsRunning Then
             Me.SendMessageToServer(Encoding.ASCII.GetBytes("Coucou server !"))
@@ -171,15 +175,27 @@ Public Class Elevator
 
         End If
         If FloorCalled.Count <> 0 And CoilDown.CheckState = CheckState.Unchecked And CoilUP.CheckState = CheckState.Unchecked Then
+<<<<<<< HEAD
             floorAsked2 = Me.selectFloorFromList()
         End If
 
         ChooseFloor(floorAsked2)
         BlinkLedSensor()
         If isOnFloor Then
+=======
+            floorAsked2 = Me.selectFloorFromList()
+        End If
+
+        ChooseFloor(floorAsked2)
+
+        If isOnFloor = False Then
+            BlinkLedSensor()
+        Else
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
             ClearLedSensor()
         End If
     End Sub
+
 
     Private Enum E_Sensor
         sensor0
@@ -193,6 +209,7 @@ Public Class Elevator
     Dim oldSensor As E_Sensor
 
     Private Sub CheckSensor()
+<<<<<<< HEAD
         'Pour la montée'
         If CoilUP.CheckState = CheckState.Checked Then
 
@@ -227,6 +244,20 @@ Public Class Elevator
             End Select
 
         End If
+=======
+        Select Case Me.ElevatorPhys.Location.Y
+            Case Me.PositionSensor0.Location.Y
+                currentSensor = E_Sensor.sensor0
+            Case Me.PositionSensor1.Location.Y
+                currentSensor = E_Sensor.sensor1
+            Case Me.PositionSensor2.Location.Y
+                currentSensor = E_Sensor.sensor2
+            Case Me.PositionSensor3.Location.Y
+                currentSensor = E_Sensor.sensor3
+            Case Me.PositionSensor4.Location.Y
+                currentSensor = E_Sensor.sensor4
+        End Select
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
 
     End Sub
 
@@ -246,6 +277,7 @@ Public Class Elevator
                 Case E_Sensor.sensor4
                     LedSensor4.BackColor = Color.Green
             End Select
+            SendCurrentSensor()
         End If
         oldSensor = currentSensor
     End Sub
@@ -263,6 +295,13 @@ Public Class Elevator
             Case E_Sensor.sensor4
                 LedSensor4.BackColor = Color.Transparent
         End Select
+
+    End Sub
+
+    Private Sub SendCurrentSensor()
+        If clientIsRunning Then
+            Me.SendMessageToServer(Encoding.ASCII.GetBytes(currentSensor.ToString))
+        End If
     End Sub
 
     Private Enum E_Floor
@@ -273,6 +312,7 @@ Public Class Elevator
     End Enum
 
     Private Sub AddFloorToList(ByVal floor As E_Floor)
+<<<<<<< HEAD
         FloorCalled.Add(floor)
     End Sub
 
@@ -282,11 +322,26 @@ Public Class Elevator
         floorSelected = FloorCalled(0) 'On copie la donnee'
         FloorCalled.RemoveAt(0) 'On supprime l'appel de l'étage traité'
         Return floorSelected
+=======
+        FloorCalled.Add(floor)
+    End Sub
+
+    Private Function selectFloorFromList()
+        Dim floorSelected As E_Floor
+        'C'est une file, on récupère la donnée du premier élement'
+        floorSelected = FloorCalled(0) 'On copie la donnee'
+        FloorCalled.RemoveAt(0) 'On supprime l'appel de l'étage traité'
+        Return floorSelected
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
     End Function
 
     Private Sub ChooseFloor(ByVal floorChosen As E_Floor)
         Select Case floorChosen
             Case E_Floor.floor0
+<<<<<<< HEAD
+=======
+                Me.isOnFloor = False
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
                 If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Checked
@@ -298,6 +353,10 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor1
+<<<<<<< HEAD
+=======
+                Me.isOnFloor = False
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor2.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -312,6 +371,10 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor2
+<<<<<<< HEAD
+=======
+                Me.isOnFloor = False
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor3.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -326,6 +389,10 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor3
+<<<<<<< HEAD
+=======
+                Me.isOnFloor = False
+>>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor4.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -368,5 +435,7 @@ Public Class Elevator
     Private Sub ButtonCallFloor1_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor1.Click
         Me.AddFloorToList(E_Floor.floor1)
     End Sub
+
+
 
 End Class
