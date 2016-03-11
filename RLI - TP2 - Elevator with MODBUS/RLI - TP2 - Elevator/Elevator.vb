@@ -17,8 +17,6 @@ Public Class Elevator
         Me.floorAsked = i
     End Sub
 
-
-
     Private Sub ConnectToServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectToServer.Click
         If Not clientIsRunning Then
             Me.clientIsRunning = True
@@ -126,12 +124,6 @@ Public Class Elevator
     End Sub
 
 
-
-
-
-
-
-
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
     ' YOUR JOB START HERE. You don't have to modify another file!
     '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -154,8 +146,6 @@ Public Class Elevator
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
-
-
 
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
         Me.AddFloorToList(E_Floor.floor2)
@@ -185,10 +175,8 @@ Public Class Elevator
         End If
 
         ChooseFloor(floorAsked2)
-
-        If isOnFloor = False Then
-            BlinkLedSensor()
-        Else
+        BlinkLedSensor()
+        If isOnFloor Then
             ClearLedSensor()
         End If
     End Sub
@@ -205,18 +193,41 @@ Public Class Elevator
     Dim oldSensor As E_Sensor
 
     Private Sub CheckSensor()
-        Select Case Me.ElevatorPhys.Location.Y
-            Case Me.PositionSensor0.Location.Y
-                currentSensor = E_Sensor.sensor0
-            Case Me.PositionSensor1.Location.Y
-                currentSensor = E_Sensor.sensor1
-            Case Me.PositionSensor2.Location.Y
-                currentSensor = E_Sensor.sensor2
-            Case Me.PositionSensor3.Location.Y
-                currentSensor = E_Sensor.sensor3
-            Case Me.PositionSensor4.Location.Y
-                currentSensor = E_Sensor.sensor4
-        End Select
+        'Pour la montée'
+        If CoilUP.CheckState = CheckState.Checked Then
+
+            Select Case Me.ElevatorPhys.Location.Y
+                Case Me.PositionSensor0.Location.Y
+                    currentSensor = E_Sensor.sensor0
+                Case Me.PositionSensor1.Location.Y
+                    currentSensor = E_Sensor.sensor1
+                Case Me.PositionSensor2.Location.Y
+                    currentSensor = E_Sensor.sensor2
+                Case Me.PositionSensor3.Location.Y
+                    currentSensor = E_Sensor.sensor3
+                Case Me.PositionSensor4.Location.Y
+                    currentSensor = E_Sensor.sensor4
+            End Select
+
+        End If
+        'Pour la descente'
+        If CoilDown.CheckState = CheckState.Checked Then
+
+            Select Case Me.ElevatorPhys.Location.Y + 140
+                Case Me.PositionSensor0.Location.Y
+                    currentSensor = E_Sensor.sensor0
+                Case Me.PositionSensor1.Location.Y
+                    currentSensor = E_Sensor.sensor1
+                Case Me.PositionSensor2.Location.Y
+                    currentSensor = E_Sensor.sensor2
+                Case Me.PositionSensor3.Location.Y
+                    currentSensor = E_Sensor.sensor3
+                Case Me.PositionSensor4.Location.Y
+                    currentSensor = E_Sensor.sensor4
+            End Select
+
+        End If
+
     End Sub
 
     Private Sub BlinkLedSensor()
@@ -276,7 +287,6 @@ Public Class Elevator
     Private Sub ChooseFloor(ByVal floorChosen As E_Floor)
         Select Case floorChosen
             Case E_Floor.floor0
-                Me.isOnFloor = False
                 If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Checked
@@ -288,7 +298,6 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor1
-                Me.isOnFloor = False
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor2.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -300,11 +309,9 @@ Public Class Elevator
                 If Me.ElevatorPhys.Location.Y = Me.PositionSensor2.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.isOnFloor = True
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor2
-                Me.isOnFloor = False
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor3.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -316,11 +323,9 @@ Public Class Elevator
                 If Me.ElevatorPhys.Location.Y = Me.PositionSensor3.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.isOnFloor = True
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor3
-                Me.isOnFloor = False
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor4.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -328,24 +333,25 @@ Public Class Elevator
                 If Me.ElevatorPhys.Location.Y = Me.PositionSensor4.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.isOnFloor = True
                     Me.setFloorAsked(4)
                 End If
             Case 4 'Aucun étage n'est appelé'
                 Me.isOnFloor = True
         End Select
 
+
+        'On gère le booleen isOnFloor'
+        If Me.ElevatorPhys.Location.Y = Me.PositionSensor4.Location.Y + 3 Or Me.ElevatorPhys.Location.Y = Me.PositionSensor3.Location.Y + 3 Or Me.ElevatorPhys.Location.Y = Me.PositionSensor2.Location.Y + 3 Or Me.ElevatorPhys.Location.Y = Me.PositionSensor1.Location.Y + 3 Or Me.ElevatorPhys.Location.Y = Me.PositionSensor0.Location.Y + 3 Then
+            Me.isOnFloor = True
+        Else : Me.isOnFloor = False
+
+        End If
     End Sub
 
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
         Me.AddFloorToList(E_Floor.floor0)
     End Sub
-
-
-
-
-
 
     Private Sub CoilDown_CheckStateChanged(sender As Object, e As EventArgs) Handles CoilDown.CheckStateChanged
         Me.CoilUP.CheckState = CheckState.Unchecked
