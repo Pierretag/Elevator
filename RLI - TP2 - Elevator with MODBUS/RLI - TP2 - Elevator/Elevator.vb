@@ -147,10 +147,7 @@ Public Class Elevator
         End If
     End Sub
 
-<<<<<<< HEAD
-=======
 
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
         Me.AddFloorToList(E_Floor.floor2)
 
@@ -175,23 +172,13 @@ Public Class Elevator
 
         End If
         If FloorCalled.Count <> 0 And CoilDown.CheckState = CheckState.Unchecked And CoilUP.CheckState = CheckState.Unchecked Then
-<<<<<<< HEAD
+
             floorAsked2 = Me.selectFloorFromList()
         End If
 
         ChooseFloor(floorAsked2)
         BlinkLedSensor()
         If isOnFloor Then
-=======
-            floorAsked2 = Me.selectFloorFromList()
-        End If
-
-        ChooseFloor(floorAsked2)
-
-        If isOnFloor = False Then
-            BlinkLedSensor()
-        Else
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
             ClearLedSensor()
         End If
     End Sub
@@ -209,7 +196,7 @@ Public Class Elevator
     Dim oldSensor As E_Sensor
 
     Private Sub CheckSensor()
-<<<<<<< HEAD
+
         'Pour la montée'
         If CoilUP.CheckState = CheckState.Checked Then
 
@@ -244,41 +231,28 @@ Public Class Elevator
             End Select
 
         End If
-=======
-        Select Case Me.ElevatorPhys.Location.Y
-            Case Me.PositionSensor0.Location.Y
-                currentSensor = E_Sensor.sensor0
-            Case Me.PositionSensor1.Location.Y
-                currentSensor = E_Sensor.sensor1
-            Case Me.PositionSensor2.Location.Y
-                currentSensor = E_Sensor.sensor2
-            Case Me.PositionSensor3.Location.Y
-                currentSensor = E_Sensor.sensor3
-            Case Me.PositionSensor4.Location.Y
-                currentSensor = E_Sensor.sensor4
-        End Select
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
+
 
     End Sub
 
     Private Sub BlinkLedSensor()
         CheckSensor()
-        If oldSensor <> currentSensor Then
-            ClearLedSensor()
-            Select Case currentSensor
-                Case E_Sensor.sensor0
-                    LedSensor0.BackColor = Color.Green
-                Case E_Sensor.sensor1
-                    LedSensor1.BackColor = Color.Green
-                Case E_Sensor.sensor2
-                    LedSensor2.BackColor = Color.Green
-                Case E_Sensor.sensor3
-                    LedSensor3.BackColor = Color.Green
-                Case E_Sensor.sensor4
-                    LedSensor4.BackColor = Color.Green
-            End Select
-            SendCurrentSensor()
-        End If
+
+        ClearLedSensor()
+        Select Case currentSensor
+            Case E_Sensor.sensor0
+                LedSensor0.BackColor = Color.Green
+            Case E_Sensor.sensor1
+                LedSensor1.BackColor = Color.Green
+            Case E_Sensor.sensor2
+                LedSensor2.BackColor = Color.Green
+            Case E_Sensor.sensor3
+                LedSensor3.BackColor = Color.Green
+            Case E_Sensor.sensor4
+                LedSensor4.BackColor = Color.Green
+        End Select
+        SendCurrentSensor()
+
         oldSensor = currentSensor
     End Sub
 
@@ -312,7 +286,7 @@ Public Class Elevator
     End Enum
 
     Private Sub AddFloorToList(ByVal floor As E_Floor)
-<<<<<<< HEAD
+
         FloorCalled.Add(floor)
     End Sub
 
@@ -321,27 +295,19 @@ Public Class Elevator
         'C'est une file, on récupère la donnée du premier élement'
         floorSelected = FloorCalled(0) 'On copie la donnee'
         FloorCalled.RemoveAt(0) 'On supprime l'appel de l'étage traité'
-        Return floorSelected
-=======
-        FloorCalled.Add(floor)
-    End Sub
 
-    Private Function selectFloorFromList()
-        Dim floorSelected As E_Floor
-        'C'est une file, on récupère la donnée du premier élement'
-        floorSelected = FloorCalled(0) 'On copie la donnee'
-        FloorCalled.RemoveAt(0) 'On supprime l'appel de l'étage traité'
+        'FloorCalled.Add(floor)
         Return floorSelected
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
+
+
     End Function
+
+
 
     Private Sub ChooseFloor(ByVal floorChosen As E_Floor)
         Select Case floorChosen
             Case E_Floor.floor0
-<<<<<<< HEAD
-=======
-                Me.isOnFloor = False
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
+
                 If Me.ElevatorPhys.Location.Y < Me.PositionSensor1.Location.Y + 3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Checked
@@ -353,10 +319,7 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor1
-<<<<<<< HEAD
-=======
-                Me.isOnFloor = False
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
+
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor2.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -371,10 +334,6 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor2
-<<<<<<< HEAD
-=======
-                Me.isOnFloor = False
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor3.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
@@ -389,10 +348,7 @@ Public Class Elevator
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor3
-<<<<<<< HEAD
-=======
-                Me.isOnFloor = False
->>>>>>> a3658ca00525addad1dda65c0ae1dbe941385196
+
                 If Me.ElevatorPhys.Location.Y > Me.PositionSensor4.Location.Y + 3 Then
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.CoilUP.CheckState = CheckState.Checked
