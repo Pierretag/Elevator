@@ -171,11 +171,20 @@ Public Class Elevator
             Case "UpdateSensor"
                 SendCurrentSensor()
             Case "UP"
-                CoilUP.CheckState = CheckState.Checked
-                CoilDown.CheckState = CheckState.Unchecked
+                'CoilUP.CheckState = CheckState.Checked
+                SetCoilUP(True)
+                SetCoilDown(False)
+                'MessageBox.Show("UP")
+                'CoilDown.CheckState = CheckState.Unchecked
             Case "DOWN"
-                CoilDown.CheckState = CheckState.Checked
-                CoilUP.CheckState = CheckState.Unchecked
+                SetCoilUP(False)
+                SetCoilDown(True)
+                ' CoilDown.CheckState = CheckState.Checked
+                'CoilUP.CheckState = C
+                'CheckState.Unchecked()
+            Case "NO"
+                SetCoilUP(False)
+                SetCoilDown(False)
         End Select
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 

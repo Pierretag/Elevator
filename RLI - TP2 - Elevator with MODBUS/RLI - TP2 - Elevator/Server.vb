@@ -247,11 +247,11 @@ Public Class Server
     Private Sub ChooseFloor(ByVal floorChosen As E_Floor)
         Select Case floorChosen
             Case E_Floor.floor0
-                If Me.currentSensor = E_Sensor.sensor0 Then
+                If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor2 Or Me.currentSensor = E_Sensor.sensor3 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Checked
                 End If
-                If Me.currentSensor = E_Sensor.sensor1 Then
+                If Me.currentSensor = E_Sensor.sensor0 Then
                     Me.CoilUP.CheckState = CheckState.Unchecked
                     Me.CoilDown.CheckState = CheckState.Unchecked
                     Me.isOnFloor = True
@@ -315,9 +315,12 @@ Public Class Server
     Private Sub UpdateTimer_Tick(sender As Object, e As EventArgs) Handles UpdateTimer.Tick
         If Order = False Then
             SendMessageToClient(Encoding.ASCII.GetBytes("UpdateSensor"))
+            Order = True
         Else
             SendCoils()
+            Order = False
         End If
+
         If FloorCalled.Count <> 0 And CoilDown.CheckState = CheckState.Unchecked And CoilUP.CheckState = CheckState.Unchecked Then
 
             floorAsked2 = Me.selectFloorFromList()
@@ -330,9 +333,10 @@ Public Class Server
     Private Sub SendCoils()
         If CoilDown.CheckState = CheckState.Checked Then
             SendMessageToClient(Encoding.ASCII.GetBytes("DOWN"))
-        End If
-        If CoilUP.CheckState = CheckState.Checked Then
+        ElseIf CoilUP.CheckState = CheckState.Checked Then
             SendMessageToClient(Encoding.ASCII.GetBytes("UP"))
+        Else : SendMessageToClient(Encoding.ASCII.GetBytes("NO"))
         End If
+
     End Sub
 End Class
