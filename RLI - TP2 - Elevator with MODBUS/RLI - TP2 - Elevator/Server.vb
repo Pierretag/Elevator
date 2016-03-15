@@ -16,7 +16,6 @@ Public Class Server
         sensor4
     End Enum
 
-
     Private Sub Server_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me._socket = New AsynchronousServer()
         Me._socket.AttachReceiveCallBack(AddressOf ReceivedDataFromClient)

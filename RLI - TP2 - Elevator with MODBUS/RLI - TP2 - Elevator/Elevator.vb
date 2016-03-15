@@ -18,7 +18,89 @@ Public Class Elevator
         Me.floorAsked = i
     End Sub
 
+    Private Sub FC2_request() 'Read discrete input
+        Dim datagram As Byte() = New Byte(12) {}
 
+        Dim t_id_0 As Integer = 0   'mettre en globale
+        Dim t_id_1 As Integer = 0   'mettre en globale
+
+        datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
+        datagram(1) = Convert.ToByte(t_id_1)    'Transaction identifier
+
+        datagram(2) = &H0   'Protocol identifier
+        datagram(3) = &H0   'Protocol identifier
+
+        datagram(4) = &H0   'Length field
+        datagram(5) = &H6   'Length field
+
+        datagram(6) = &H0   'Unit identifier
+
+        datagram(7) = &H2   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H0   'Reference number
+
+        datagram(10) = &H0  'Bit count
+        datagram(11) = &H8  'Bit count
+
+        For Each content As Byte In datagram
+            Debug.Write("Request " + content.ToString)
+        Next
+
+        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+            t_id_0 += 1
+            t_id_1 = 0
+        Else
+            t_id_1 += 1
+        End If
+
+    End Sub
+
+    Private Sub FC2_response(request As Byte()) 'Read discrete input
+        Dim datagram As Byte() = New Byte(10) {}
+
+        Dim t_id_0 As Integer = 0   'mettre en globale
+        Dim t_id_1 As Integer = 0   'mettre en globale
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H2   'MODBUS function code
+
+        datagram(8) = &H1   'Byte count
+        'datagram(9) = Convert.ToByte(int aSensor) 'Bit values
+        datagram(9) = &H0   'Bit values
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+    End Sub
+
+    Private Sub FC2_exception(request As Byte()) 'Read discrete input
+        Dim datagram As Byte() = New Byte(9) {}
+
+        Dim t_id_0 As Integer = 0   'mettre en globale
+        Dim t_id_1 As Integer = 0   'mettre en globale
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H82   'MODBUS function code
+
+        datagram(8) = &H1   'Exception code 0x01 or 0x02
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+    End Sub
 
     Private Sub ConnectToServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectToServer.Click
         If Not clientIsRunning Then
