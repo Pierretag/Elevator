@@ -21,25 +21,25 @@ Namespace AsyncSocket
             '
             'ServerName
             '
-            Me.ServerName.Location = New System.Drawing.Point(19, 18)
+            Me.ServerName.Location = New System.Drawing.Point(12, 12)
             Me.ServerName.Name = "ServerName"
-            Me.ServerName.Size = New System.Drawing.Size(319, 26)
+            Me.ServerName.Size = New System.Drawing.Size(199, 20)
             Me.ServerName.TabIndex = 0
             Me.ServerName.Text = "IP Address / Serveur Name"
             '
             'Valid
             '
-            Me.Valid.Location = New System.Drawing.Point(133, 56)
+            Me.Valid.Location = New System.Drawing.Point(83, 38)
             Me.Valid.Name = "Valid"
-            Me.Valid.Size = New System.Drawing.Size(96, 33)
+            Me.Valid.Size = New System.Drawing.Size(60, 23)
             Me.Valid.TabIndex = 1
             Me.Valid.Text = "OK"
             Me.Valid.UseVisualStyleBackColor = True
             '
             'ServerNameForm
             '
-            Me.AutoScaleBaseSize = New System.Drawing.Size(8, 19)
-            Me.ClientSize = New System.Drawing.Size(510, 285)
+            Me.AutoScaleBaseSize = New System.Drawing.Size(5, 13)
+            Me.ClientSize = New System.Drawing.Size(236, 83)
             Me.Controls.Add(Me.Valid)
             Me.Controls.Add(Me.ServerName)
             Me.Name = "ServerNameForm"

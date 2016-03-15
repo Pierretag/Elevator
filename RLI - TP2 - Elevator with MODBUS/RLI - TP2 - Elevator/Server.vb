@@ -8,6 +8,7 @@ Public Class Server
     Dim _socket As AsynchronousServer
     Dim currentSensor As E_Sensor
     Dim oldSensor As E_Sensor
+    Dim update As Boolean = False
     Private Enum E_Sensor
         sensor0
         sensor1
@@ -16,6 +17,35 @@ Public Class Server
         sensor4
     End Enum
 
+    ' This delegate enables asynchronous calls for setting
+    ' the property on a Checkbox control.
+    Delegate Sub SetCoilUPCallback(ByVal [val] As Boolean)
+    Public Sub SetCoilUP(ByVal [val] As Boolean)
+        ' InvokeRequired required compares the thread ID of the
+        ' calling thread to the thread ID of the creating thread.
+        ' If these threads are different, it returns true.
+        If Me.CoilUP.InvokeRequired Then
+            Dim d As New SetCoilUPCallback(AddressOf SetCoilUP)
+            Me.Invoke(d, New Object() {[val]})
+        Else
+            Me.CoilUP.Checked = [val]
+        End If
+    End Sub
+
+    ' This delegate enables asynchronous calls for setting
+    ' the property on a Checkbox control.
+    Delegate Sub SetCoilDownCallback(ByVal [val] As Boolean)
+    Public Sub SetCoilDown(ByVal [val] As Boolean)
+        ' InvokeRequired required compares the thread ID of the
+        ' calling thread to the thread ID of the creating thread.
+        ' If these threads are different, it returns true.
+        If Me.CoilDown.InvokeRequired Then
+            Dim d As New SetCoilDownCallback(AddressOf SetCoilDown)
+            Me.Invoke(d, New Object() {[val]})
+        Else
+            Me.CoilDown.Checked = [val]
+        End If
+    End Sub
 
     Private Sub Server_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me._socket = New AsynchronousServer()
@@ -59,13 +89,27 @@ Public Class Server
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
         Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
         BlinkLedSensor(Msg)
-
+        ' CheckCoils(Msg)
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
 
-    
+    Private Sub CheckCoils(ByVal Msg As String)
+        Select Case Msg
+            Case "UP"
+
+                Me.CoilUP.CheckState = CheckState.Checked
+                Me.CoilDown.CheckState = CheckState.Unchecked
+            Case "DOWN"
+                Me.CoilDown.CheckState = CheckState.Checked
+                Me.CoilUP.CheckState = CheckState.Unchecked
+        End Select
+
+    End Sub
+
+
+
 
     Private Sub CheckSensor(ByVal Msg As String)
         Select Case Msg
@@ -119,6 +163,17 @@ Public Class Server
     End Sub
 
 
-    
 
+
+    Private Sub UpdateTimer_Tick(sender As Object, e As EventArgs) Handles UpdateTimer.Tick
+        If update = False Then
+
+            SendMessageToClient(Encoding.ASCII.GetBytes("UpdateSensor"))
+            update = True
+        Else
+            SendMessageToClient(Encoding.ASCII.GetBytes("UpdateCoils"))
+            update = False
+        End If
+
+    End Sub
 End Class

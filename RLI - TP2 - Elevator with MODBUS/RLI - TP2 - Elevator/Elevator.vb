@@ -125,12 +125,12 @@ Public Class Elevator
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
         Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
-        MessageBox.Show("Server says :" + Msg, "I am Client")
+        'MessageBox.Show("Server says :" + Msg, "I am Client")
         Select Case Msg
             Case "UpdateSensor"
                 SendCurrentSensor()
             Case "UpdateCoils"
-
+                SendCoilsToServer()
         End Select
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
@@ -251,7 +251,7 @@ Public Class Elevator
             Case E_Sensor.sensor4
                 LedSensor4.BackColor = Color.Green
         End Select
-        SendCurrentSensor()
+        'SendCurrentSensor()
 
         oldSensor = currentSensor
     End Sub

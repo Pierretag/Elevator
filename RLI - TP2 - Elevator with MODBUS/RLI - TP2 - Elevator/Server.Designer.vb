@@ -22,6 +22,7 @@ Partial Class Server
     'Ne la modifiez pas à l'aide de l'éditeur de code.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.CallFloor3 = New System.Windows.Forms.Button()
         Me.CallFloor2 = New System.Windows.Forms.Button()
         Me.CallFloor1 = New System.Windows.Forms.Button()
@@ -42,6 +43,7 @@ Partial Class Server
         Me.CoilDown = New System.Windows.Forms.CheckBox()
         Me.CoilUP = New System.Windows.Forms.CheckBox()
         Me.LabelCoils = New System.Windows.Forms.Label()
+        Me.UpdateTimer = New System.Windows.Forms.Timer(Me.components)
         Me.PanelSensors.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
@@ -239,6 +241,10 @@ Partial Class Server
         Me.LabelCoils.TabIndex = 3
         Me.LabelCoils.Text = "Coils/Outputs"
         '
+        'UpdateTimer
+        '
+        Me.UpdateTimer.Enabled = True
+        '
         'Server
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -279,5 +285,6 @@ Partial Class Server
     Public WithEvents CoilDown As System.Windows.Forms.CheckBox
     Friend WithEvents CoilUP As System.Windows.Forms.CheckBox
     Friend WithEvents LabelCoils As System.Windows.Forms.Label
+    Friend WithEvents UpdateTimer As System.Windows.Forms.Timer
 
 End Class
