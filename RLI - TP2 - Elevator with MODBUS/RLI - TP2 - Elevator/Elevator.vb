@@ -1,4 +1,4 @@
-﻿Imports System.Text
+Imports System.Text
 Imports RLI___TP2___Elevator.AsyncSocket.AsynchronousSocket
 Imports RLI___TP2___Elevator.AsyncSocket.ClientSocket
 Imports RLI___TP2___Elevator.AsyncSocket.ServerSocket
@@ -11,7 +11,7 @@ Public Class Elevator
 
 
 
-    
+
     Private Sub FC2_response(request As Byte()) 'Read discrete input
         Dim datagram As Byte() = New Byte(10) {}
 
@@ -192,8 +192,6 @@ Public Class Elevator
     End Sub
 
 
-    
-
 
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
         ' Me.AddFloorToList(E_Floor.floor2)
@@ -218,7 +216,7 @@ Public Class Elevator
             Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 1)
 
         End If
-        
+
         BlinkLedSensor()
         '  If isOnFloor Then
         'ClearLedSensor()
@@ -347,7 +345,7 @@ Public Class Elevator
 
 
 
-    
+
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
         ' Me.AddFloorToList(E_Floor.floor0)

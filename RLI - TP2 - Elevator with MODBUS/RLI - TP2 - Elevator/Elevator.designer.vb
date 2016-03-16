@@ -392,7 +392,7 @@ Partial Class Elevator
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(787, 655)
+        Me.ClientSize = New System.Drawing.Size(814, 682)
         Me.Controls.Add(Me.PositionSensor4)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.ElevatorPhys)
