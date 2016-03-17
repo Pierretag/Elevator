@@ -84,6 +84,8 @@ Public Class Elevator
                 datagram(9) = &H8   'Bit values
             Case E_Sensor.sensor4
                 datagram(9) = &H10   'Bit values
+            Case E_Sensor.NoSensor
+                datagram(9) = &H0
         End Select
 
         For Each content As Byte In datagram
@@ -334,6 +336,7 @@ Public Class Elevator
                 Case &H1    'Read coils
                     rsp = FC1_response(Msg)
                 Case &H2    'Read discrete inputs
+                    BlinkLedSensor()
                     rsp = FC2_response(Msg)
                 Case &H5    'Write coil
                     rsp = FC5_response(Msg)
@@ -404,47 +407,28 @@ Public Class Elevator
         sensor2
         sensor3
         sensor4
+        NoSensor
     End Enum
 
     Dim currentSensor As E_Sensor
     Dim oldSensor As E_Sensor
 
     Private Sub CheckSensor()
-
-        'Pour la montée'
-        If CoilUP.CheckState = CheckState.Checked Then
-
-            Select Case Me.ElevatorPhys.Location.Y
-                Case Me.PositionSensor0.Location.Y
-                    currentSensor = E_Sensor.sensor0
-                Case Me.PositionSensor1.Location.Y
-                    currentSensor = E_Sensor.sensor1
-                Case Me.PositionSensor2.Location.Y
-                    currentSensor = E_Sensor.sensor2
-                Case Me.PositionSensor3.Location.Y
-                    currentSensor = E_Sensor.sensor3
-                Case Me.PositionSensor4.Location.Y
-                    currentSensor = E_Sensor.sensor4
-            End Select
-
+        If (Me.PositionSensor0.Location.Y - Me.ElevatorPhys.Location.Y > 1 And Me.PositionSensor0.Location.Y - Me.ElevatorPhys.Location.Y < 138) Then
+            currentSensor = E_Sensor.sensor0
+        ElseIf (Me.PositionSensor1.Location.Y - Me.ElevatorPhys.Location.Y > 1 And Me.PositionSensor1.Location.Y - Me.ElevatorPhys.Location.Y < 138) Then
+            currentSensor = E_Sensor.sensor1
+        ElseIf (Me.PositionSensor2.Location.Y - Me.ElevatorPhys.Location.Y > 1 And Me.PositionSensor2.Location.Y - Me.ElevatorPhys.Location.Y < 138) Then
+            currentSensor = E_Sensor.sensor2
+        ElseIf (Me.PositionSensor3.Location.Y - Me.ElevatorPhys.Location.Y > 1 And Me.PositionSensor3.Location.Y - Me.ElevatorPhys.Location.Y < 138) Then
+            currentSensor = E_Sensor.sensor3
+        ElseIf (Me.PositionSensor4.Location.Y - Me.ElevatorPhys.Location.Y > 1 And Me.PositionSensor4.Location.Y - Me.ElevatorPhys.Location.Y < 138) Then
+            currentSensor = E_Sensor.sensor4
+        Else
+            currentSensor = E_Sensor.NoSensor
         End If
-        'Pour la descente'
-        If CoilDown.CheckState = CheckState.Checked Then
 
-            Select Case Me.ElevatorPhys.Location.Y + 140
-                Case Me.PositionSensor0.Location.Y
-                    currentSensor = E_Sensor.sensor0
-                Case Me.PositionSensor1.Location.Y
-                    currentSensor = E_Sensor.sensor1
-                Case Me.PositionSensor2.Location.Y
-                    currentSensor = E_Sensor.sensor2
-                Case Me.PositionSensor3.Location.Y
-                    currentSensor = E_Sensor.sensor3
-                Case Me.PositionSensor4.Location.Y
-                    currentSensor = E_Sensor.sensor4
-            End Select
 
-        End If
 
 
     End Sub
@@ -464,6 +448,7 @@ Public Class Elevator
                 LedSensor3.BackColor = Color.Green
             Case E_Sensor.sensor4
                 LedSensor4.BackColor = Color.Green
+
         End Select
         'SendCurrentSensor()
 

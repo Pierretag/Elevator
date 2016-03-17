@@ -23,6 +23,8 @@ Public Class Server
         sensor4
         NoSensor
     End Enum
+    Dim CurrentFloor As Integer
+    Dim VeryOldSensor As E_Sensor
 
     Public Sub setFloorAsked(ByVal i As Integer)
         Me.floorAsked = i
@@ -197,7 +199,7 @@ Public Class Server
             t_id_1 += 1
         End If
 
-       
+
 
     End Sub
 
@@ -293,6 +295,9 @@ Public Class Server
                 End Select
             Case &H2    'Read discrete inputs
                 Select Case Msg(9)
+                    Case &H0
+                        BlinkLedSensor("NoSensor")
+                        Debug.WriteLine("OK No bs ")
                     Case &H1
                         BlinkLedSensor("sensor0")
                     Case &H2
@@ -334,38 +339,54 @@ Public Class Server
         Select Case Msg
             Case "sensor0"
                 currentSensor = E_Sensor.sensor0
+
             Case "sensor1"
                 currentSensor = E_Sensor.sensor1
+
             Case "sensor2"
                 currentSensor = E_Sensor.sensor2
+
             Case "sensor3"
                 currentSensor = E_Sensor.sensor3
+
             Case "sensor4"
                 currentSensor = E_Sensor.sensor4
+
             Case "NoSensor"
                 currentSensor = E_Sensor.NoSensor
+
         End Select
     End Sub
 
     Private Sub BlinkLedSensor(ByVal Msg As String)
-        CheckSensor(Msg)
-        If oldSensor <> currentSensor Then
-            ClearLedSensor()
-            Select Case currentSensor
-                Case E_Sensor.sensor0
-                    LedSensor0.BackColor = Color.Green
-                Case E_Sensor.sensor1
-                    LedSensor1.BackColor = Color.Green
-                Case E_Sensor.sensor2
-                    LedSensor2.BackColor = Color.Green
-                Case E_Sensor.sensor3
-                    LedSensor3.BackColor = Color.Green
-                Case E_Sensor.sensor4
-                    LedSensor4.BackColor = Color.Green
-            End Select
-        End If
+        
+
         oldSensor = currentSensor
+        VeryOldSensor = oldSensor
+        CheckSensor(Msg)
+        ClearLedSensor()
+        Select Case currentSensor
+            Case E_Sensor.sensor0
+                LedSensor0.BackColor = Color.Green
+                isOnFloor = False
+            Case E_Sensor.sensor1
+                LedSensor1.BackColor = Color.Green
+                isOnFloor = False
+            Case E_Sensor.sensor2
+                LedSensor2.BackColor = Color.Green
+                isOnFloor = False
+            Case E_Sensor.sensor3
+                LedSensor3.BackColor = Color.Green
+                isOnFloor = False
+            Case E_Sensor.sensor4
+                LedSensor4.BackColor = Color.Green
+                isOnFloor = False
+            Case E_Sensor.NoSensor
+                isOnFloor = True
+        End Select
+
     End Sub
+
 
     Private Sub ClearLedSensor()
         Select Case oldSensor
@@ -407,70 +428,126 @@ Public Class Server
 
     End Function
 
+    Private Sub setCurrentFloor()
+        Select Case oldSensor
+            Case E_Sensor.sensor1
+                'L'ascenceur descend et est devant le sensor1, dès qu'il ne l'est plus, il est à l'étage 0
+                If CoilDown.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 1 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor0
+                        isOnFloor = True
+
+                    End If
+                End If
+                'L'ascenceur monte et est devant le sensor 1, dès qu'il ne l'est plus, il est à l'étage 1
+                If CoilUP.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 1 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor1
+                        isOnFloor = True
+
+                    End If
+                End If
+            Case E_Sensor.sensor2
+                'L'ascenceur descend et est devant le sensor2, dès qu'il ne l'est plus, il est à l'étage 1
+                If CoilDown.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 2 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor1
+                        isOnFloor = True
+
+                    End If
+                End If
+                'L'ascenceur monte et est devant le sensor 2, dès qu'il ne l'est plus, il est à l'étage 2
+                If CoilUP.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 2 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor2
+                        isOnFloor = True
+
+                    End If
+                End If
+            Case E_Sensor.sensor3
+                'L'ascenceur descend et est devant le sensor1, dès qu'il ne l'est plus, il est à l'étage 2
+                If CoilDown.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 3 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor2
+                        isOnFloor = True
+
+                    End If
+                End If
+                'L'ascenceur monte et est devant le sensor 1, dès qu'il ne l'est plus, il est à l'étage 3
+                If CoilUP.CheckState = CheckState.Checked Then
+                    Debug.WriteLine("OK SENSOR 3 ")
+                    If currentSensor = E_Sensor.NoSensor Then
+                        CurrentFloor = E_Floor.floor3
+                        isOnFloor = True
+
+                    End If
+                End If
+
+        End Select
+    End Sub
 
     Private Sub ChooseFloor(ByVal floorChosen As E_Floor)
+
+        setCurrentFloor()
         Select Case floorChosen
             Case E_Floor.floor0
-                If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor2 Or Me.currentSensor = E_Sensor.sensor3 Then
+                If CurrentFloor <> E_Floor.floor0 Then
                     SetCoilUP(False)
                     SetCoilDown(True)
                 End If
-                If Me.currentSensor = E_Sensor.sensor0 Then
+                If CurrentFloor = E_Floor.floor0 Then
                     SetCoilUP(False)
                     SetCoilDown(False)
-                    Me.isOnFloor = True
-                    Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor1
-
-                If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor0 Then
-                    SetCoilDown(False)
-                    SetCoilUP(True)
-                End If
-                If Me.currentSensor = E_Sensor.sensor3 Or Me.currentSensor = E_Sensor.sensor4 Then
+                If CurrentFloor > E_Floor.floor1 Then
                     SetCoilUP(False)
                     SetCoilDown(True)
                 End If
-                If Me.currentSensor = E_Sensor.sensor2 Then
+                If CurrentFloor < E_Floor.floor1 Then
+                    SetCoilUP(True)
+                    SetCoilDown(False)
+                End If
+                If CurrentFloor = E_Floor.floor1 Then
                     SetCoilUP(False)
                     SetCoilDown(False)
-                    Me.setFloorAsked(4)
+
                 End If
             Case E_Floor.floor2
-                If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor0 Or Me.currentSensor = E_Sensor.sensor2 Then
-                    SetCoilDown(False)
-                    SetCoilUP(True)
-                End If
-                If Me.currentSensor = E_Sensor.sensor4 Then
+                If CurrentFloor > E_Floor.floor2 Then
                     SetCoilUP(False)
                     SetCoilDown(True)
                 End If
-                If Me.currentSensor = E_Sensor.sensor3 Then
+                If CurrentFloor < E_Floor.floor2 Then
+                    SetCoilUP(True)
+                    SetCoilDown(False)
+                End If
+                If CurrentFloor = E_Floor.floor2 Then
                     SetCoilUP(False)
                     SetCoilDown(False)
-                    Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor3
-
-                If Me.currentSensor = E_Sensor.sensor0 Or Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor2 Or Me.currentSensor = E_Sensor.sensor3 Then
-                    SetCoilDown(False)
+                If CurrentFloor <> E_Floor.floor3 Then
                     SetCoilUP(True)
+                    SetCoilDown(False)
                 End If
-                If Me.currentSensor = E_Sensor.sensor4 Then
+                If CurrentFloor = E_Floor.floor3 Then
                     SetCoilUP(False)
                     SetCoilDown(False)
-                    Me.setFloorAsked(4)
                 End If
-            Case 4 'Aucun étage n'est appelé'
-                Me.isOnFloor = True
+
+
+
         End Select
 
 
-        'On gère le booleen isOnFloor'
-        If Me.currentSensor = E_Sensor.NoSensor Then
-            Me.isOnFloor = True
-        Else : Me.isOnFloor = False
-
+        If isOnFloor Then
+            ClearLedSensor()
         End If
     End Sub
 
@@ -486,7 +563,7 @@ Public Class Server
             Order = False
         End If
 
-        If FloorCalled.Count <> 0 And CoilDown.CheckState = CheckState.Unchecked And CoilUP.CheckState = CheckState.Unchecked Then
+        If FloorCalled.Count <> 0 And CoilDown.Checked = CheckState.Unchecked And CoilUP.Checked = CheckState.Unchecked Then
 
             floorAsked2 = Me.selectFloorFromList()
         End If
