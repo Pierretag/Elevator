@@ -34,7 +34,7 @@ Public Class Elevator
         End If 'Bit values
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            'Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -54,7 +54,7 @@ Public Class Elevator
         datagram(8) = &H1   'Exception code 0x01 or 0x02
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            ' Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -83,11 +83,11 @@ Public Class Elevator
             Case E_Sensor.sensor3
                 datagram(9) = &H8   'Bit values
             Case E_Sensor.sensor4
-                datagram(9) = &H16   'Bit values
+                datagram(9) = &H10   'Bit values
         End Select
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            ' Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -107,7 +107,7 @@ Public Class Elevator
         datagram(8) = &H1   'Exception code 0x01 or 0x02
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            'Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -130,28 +130,31 @@ Public Class Elevator
         datagram(10) = request(10)
         datagram(11) = request(11)
 
-        If datagram(10) = 0 And datagram(11) = 1 Then
+        'If datagram(10) = 0 And datagram(11) = 1 Then
+        If datagram(10) = &HF Then
             SetCoilUP(True)
             SetCoilDown(False)
-            MessageBox.Show("UP")
+            'MessageBox.Show("UP")
 
             'CoilUP.CheckState = CheckState.Checked
             'CoilDown.CheckState = CheckState.Unchecked
-        ElseIf datagram(10) = 1 And datagram(11) = 0 Then
+            'ElseIf datagram(10) = 1 And datagram(11) = 0 Then
+        ElseIf datagram(10) = &HF0 Then
             SetCoilUP(False)
             SetCoilDown(True)
-            MessageBox.Show("DOWN")
+            '  MessageBox.Show("DOWN")
 
             'CoilDown.CheckState = CheckState.Checked
             'CoilUP.CheckState = CheckState.Unchecked
-        ElseIf datagram(10) = 0 And datagram(11) = 0 Then
+            'ElseIf datagram(10) = 0 And datagram(11) = 0 Then
+        ElseIf datagram(10) = &H0 Then
             SetCoilUP(False)
             SetCoilDown(False)
-            MessageBox.Show("NO")
+            'MessageBox.Show("NO")
         End If
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            'Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -171,7 +174,7 @@ Public Class Elevator
         datagram(8) = &H1   'Exception code 0x01 or 0x02 or 0x03
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            'Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -195,7 +198,7 @@ Public Class Elevator
         datagram(11) = &H10 'Bit count
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            ' Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -215,7 +218,7 @@ Public Class Elevator
         datagram(8) = &H1   'Exception code 0x01 or 0x02
 
         For Each content As Byte In datagram
-            Debug.Write("Response " + content.ToString)
+            'Debug.Write("Response " + content.ToString)
         Next
         Return datagram
     End Function
@@ -326,20 +329,22 @@ Public Class Elevator
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
         Dim Msg As Byte() = e.ReceivedBytes
         Dim rsp As Byte()
-
-        Select Case Msg(7)  'Check MODBUS function code
-            Case &H1    'Read coils
-                rsp = FC1_response(Msg)
-            Case &H2    'Read discrete inputs
-                rsp = FC2_response(Msg)
-            Case &H5    'Write coil
-                rsp = FC5_response(Msg)
-            Case &H15   'Force multiple coils
-                rsp = FC15_response(Msg)
-            Case Else
-                rsp = FC1_exception(Msg)
-        End Select
-
+        Try
+            Select Case Msg(7)  'Check MODBUS function code
+                Case &H1    'Read coils
+                    rsp = FC1_response(Msg)
+                Case &H2    'Read discrete inputs
+                    rsp = FC2_response(Msg)
+                Case &H5    'Write coil
+                    rsp = FC5_response(Msg)
+                Case &H15   'Force multiple coils
+                    rsp = FC15_response(Msg)
+                Case Else
+                    rsp = FC1_exception(Msg)
+            End Select
+        Catch exception As IndexOutOfRangeException
+            Debug.WriteLine("BUG")
+        End Try
         If clientIsRunning Then
             Me.SendMessageToServer(rsp)
         Else

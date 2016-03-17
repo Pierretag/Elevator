@@ -51,10 +51,13 @@ Public Class Server
         datagram(11) = &H2  'Bit count
 
         For Each content As Byte In datagram
-            Debug.Write("Request " + content.ToString)
+            '  Debug.Write("Request " + content.ToString)
         Next
-
-        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+        If t_id_0 = 255 And t_id_1 = 255 Then
+            t_id_0 = 0
+            t_id_1 = 0
+        End If
+        If t_id_1 = 255 Then
             t_id_0 += 1
             t_id_1 = 0
         Else
@@ -86,19 +89,22 @@ Public Class Server
         datagram(11) = &H8  'Bit count
 
         For Each content As Byte In datagram
-            Debug.Write("Request " + content.ToString)
+            ' Debug.Write("Request " + content.ToString)
         Next
-
-        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+        If t_id_0 = 255 And t_id_1 = 255 Then
+            t_id_0 = 0
+            t_id_1 = 0
+        End If
+        If t_id_1 = 255 Then
             t_id_0 += 1
             t_id_1 = 0
         Else
             t_id_1 += 1
         End If
-
+        SendMessageToClient(datagram)
     End Sub
 
-    Private Sub FC5_request() 'Write coils
+    Private Sub FC5_request(ByVal CoilU As Boolean, ByVal CoilD As Boolean) 'Write coils
         Dim datagram As Byte() = New Byte(12) {}
 
         datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
@@ -119,22 +125,34 @@ Public Class Server
 
         ' -------- A MODIFIER QUAND ON SET UN COIL POUR DONNER L'ORDRE ----------------------
 
-        datagram(10) = &HFF  'ON COIL 1 & 2 (0xFF) / ON Coil 1 (Ox0F) / etc
+        'datagram(10) = &HFF  'ON COIL 1 & 2 (0xFF) / ON Coil 1 (Ox0F) / etc
+        If (CoilU = True And CoilD = False) Then
+            datagram(10) = &HF
+        ElseIf (CoilD = True And CoilU = False) Then
+            datagram(10) = &HF0
+        ElseIf (CoilD = False And CoilU = False) Then
+            datagram(10) = &H0
+        End If
 
         '-----------------------------------------------------------------------------------
 
         datagram(11) = &H0  '
 
         For Each content As Byte In datagram
-            Debug.Write("Request " + content.ToString)
+            ' Debug.Write("Request " + content.ToString)
         Next
 
-        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+        If t_id_0 = 255 And t_id_1 = 255 Then
+            t_id_0 = 0
+            t_id_1 = 0
+        End If
+        If t_id_1 = 255 Then
             t_id_0 += 1
             t_id_1 = 0
         Else
             t_id_1 += 1
         End If
+        SendMessageToClient(datagram)
 
     End Sub
 
@@ -165,15 +183,21 @@ Public Class Server
         datagram(14) = &HF0 'Data byte2
 
         For Each content As Byte In datagram
-            Debug.Write("Request " + content.ToString)
+            'Debug.Write("Request " + content.ToString)
         Next
 
-        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+        If t_id_0 = 255 And t_id_1 = 255 Then
+            t_id_0 = 0
+            t_id_1 = 0
+        End If
+        If t_id_1 = 255 Then
             t_id_0 += 1
             t_id_1 = 0
         Else
             t_id_1 += 1
         End If
+
+       
 
     End Sub
 
@@ -277,7 +301,7 @@ Public Class Server
                         BlinkLedSensor("sensor2")
                     Case &H8
                         BlinkLedSensor("sensor3")
-                    Case &H16
+                    Case &H10
                         BlinkLedSensor("sensor4")
                 End Select
             Case &H5    'Write coil
@@ -294,11 +318,11 @@ Public Class Server
     Private Sub CheckCoils(ByVal Msg As String)
         Select Case Msg
             Case "UP"
-                Me.CoilUP.CheckState = CheckState.Checked
-                Me.CoilDown.CheckState = CheckState.Unchecked
+                SetCoilUP(True)
+                SetCoilDown(False)
             Case "DOWN"
-                Me.CoilDown.CheckState = CheckState.Checked
-                Me.CoilUP.CheckState = CheckState.Unchecked
+                SetCoilDown(True)
+                SetCoilUP(False)
         End Select
 
     End Sub
@@ -388,53 +412,53 @@ Public Class Server
         Select Case floorChosen
             Case E_Floor.floor0
                 If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor2 Or Me.currentSensor = E_Sensor.sensor3 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Checked
+                    SetCoilUP(False)
+                    SetCoilDown(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor0 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    SetCoilUP(False)
+                    SetCoilDown(False)
                     Me.isOnFloor = True
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor1
 
                 If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor0 Then
-                    Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.CoilUP.CheckState = CheckState.Checked
+                    SetCoilDown(False)
+                    SetCoilUP(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor3 Or Me.currentSensor = E_Sensor.sensor4 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Checked
+                    SetCoilUP(False)
+                    SetCoilDown(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor2 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    SetCoilUP(False)
+                    SetCoilDown(False)
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor2
                 If Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor0 Or Me.currentSensor = E_Sensor.sensor2 Then
-                    Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.CoilUP.CheckState = CheckState.Checked
+                    SetCoilDown(False)
+                    SetCoilUP(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor4 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Checked
+                    SetCoilUP(False)
+                    SetCoilDown(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor3 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    SetCoilUP(False)
+                    SetCoilDown(False)
                     Me.setFloorAsked(4)
                 End If
             Case E_Floor.floor3
 
                 If Me.currentSensor = E_Sensor.sensor0 Or Me.currentSensor = E_Sensor.sensor1 Or Me.currentSensor = E_Sensor.sensor2 Or Me.currentSensor = E_Sensor.sensor3 Then
-                    Me.CoilDown.CheckState = CheckState.Unchecked
-                    Me.CoilUP.CheckState = CheckState.Checked
+                    SetCoilDown(False)
+                    SetCoilUP(True)
                 End If
                 If Me.currentSensor = E_Sensor.sensor4 Then
-                    Me.CoilUP.CheckState = CheckState.Unchecked
-                    Me.CoilDown.CheckState = CheckState.Unchecked
+                    SetCoilUP(False)
+                    SetCoilDown(False)
                     Me.setFloorAsked(4)
                 End If
             Case 4 'Aucun étage n'est appelé'
@@ -454,7 +478,8 @@ Public Class Server
 
     Private Sub UpdateTimer_Tick(sender As Object, e As EventArgs) Handles UpdateTimer.Tick
         If Order = False Then
-            SendMessageToClient(Encoding.ASCII.GetBytes("UpdateSensor"))
+            'SendMessageToClient(Encoding.ASCII.GetBytes("UpdateSensor"))
+            FC2_request()
             Order = True
         Else
             SendCoils()
@@ -472,10 +497,10 @@ Public Class Server
 
     Private Sub SendCoils()
         If CoilDown.CheckState = CheckState.Checked Then
-            SendMessageToClient(Encoding.ASCII.GetBytes("DOWN"))
+            FC5_request(False, True)
         ElseIf CoilUP.CheckState = CheckState.Checked Then
-            SendMessageToClient(Encoding.ASCII.GetBytes("UP"))
-        Else : SendMessageToClient(Encoding.ASCII.GetBytes("NO"))
+            FC5_request(True, False)
+        Else : FC5_request(False, False)
         End If
 
     End Sub
