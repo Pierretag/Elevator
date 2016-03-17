@@ -4,6 +4,8 @@ Imports RLI___TP2___Elevator.AsyncSocket.ServerSocket
 Imports System.Text
 
 Public Class Server
+    Dim t_id_0 As Integer = 0
+    Dim t_id_1 As Integer = 0
 
     Dim _socket As AsynchronousServer
     Dim currentSensor As E_Sensor
@@ -26,12 +28,43 @@ Public Class Server
         Me.floorAsked = i
     End Sub
 
+    Private Sub FC1_request() 'Read coils
+        Dim datagram As Byte() = New Byte(12) {}
+
+        datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
+        datagram(1) = Convert.ToByte(t_id_1)    'Transaction identifier
+
+        datagram(2) = &H0   'Protocol identifier
+        datagram(3) = &H0   'Protocol identifier
+
+        datagram(4) = &H0   'Length field
+        datagram(5) = &H6   'Length field
+
+        datagram(6) = &H0   'Unit identifier
+
+        datagram(7) = &H1   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H0   'Reference number
+
+        datagram(10) = &H0  'Bit count
+        datagram(11) = &H2  'Bit count
+
+        For Each content As Byte In datagram
+            Debug.Write("Request " + content.ToString)
+        Next
+
+        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+            t_id_0 += 1
+            t_id_1 = 0
+        Else
+            t_id_1 += 1
+        End If
+
+    End Sub
 
     Private Sub FC2_request() 'Read discrete input
         Dim datagram As Byte() = New Byte(12) {}
-
-        Dim t_id_0 As Integer = 0   'mettre en globale
-        Dim t_id_1 As Integer = 0   'mettre en globale
 
         datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
         datagram(1) = Convert.ToByte(t_id_1)    'Transaction identifier
@@ -65,6 +98,84 @@ Public Class Server
 
     End Sub
 
+    Private Sub FC5_request() 'Write coils
+        Dim datagram As Byte() = New Byte(12) {}
+
+        datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
+        datagram(1) = Convert.ToByte(t_id_1)    'Transaction identifier
+
+        datagram(2) = &H0   'Protocol identifier
+        datagram(3) = &H0   'Protocol identifier
+
+        datagram(4) = &H0   'Length field
+        datagram(5) = &H6   'Length field
+
+        datagram(6) = &H0   'Unit identifier
+
+        datagram(7) = &H5   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H0   'Reference number
+
+        ' -------- A MODIFIER QUAND ON SET UN COIL POUR DONNER L'ORDRE ----------------------
+
+        datagram(10) = &HFF  'ON COIL 1 & 2 (0xFF) / ON Coil 1 (Ox0F) / etc
+
+        '-----------------------------------------------------------------------------------
+
+        datagram(11) = &H0  '
+
+        For Each content As Byte In datagram
+            Debug.Write("Request " + content.ToString)
+        Next
+
+        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+            t_id_0 += 1
+            t_id_1 = 0
+        Else
+            t_id_1 += 1
+        End If
+
+    End Sub
+
+    Private Sub FC15_request() 'Force multiple coils
+        Dim datagram As Byte() = New Byte(15) {}
+
+        datagram(0) = Convert.ToByte(t_id_0)    'Transaction identifier
+        datagram(1) = Convert.ToByte(t_id_1)    'Transaction identifier
+
+        datagram(2) = &H0   'Protocol identifier
+        datagram(3) = &H0   'Protocol identifier
+
+        datagram(4) = &H0   'Length field
+        datagram(5) = &H6   'Length field
+
+        datagram(6) = &H0   'Unit identifier
+
+        datagram(7) = &HF   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H0   'Reference number
+
+        datagram(10) = &H0  'Bit count
+        datagram(11) = &H8  'Bit count
+
+        datagram(12) = &H2  'Byte count
+        datagram(13) = &HA5 'Data byte1
+        datagram(14) = &HF0 'Data byte2
+
+        For Each content As Byte In datagram
+            Debug.Write("Request " + content.ToString)
+        Next
+
+        If t_id_1.Equals(Convert.ToInt32(11111111)) Then
+            t_id_0 += 1
+            t_id_1 = 0
+        Else
+            t_id_1 += 1
+        End If
+
+    End Sub
 
 
 
@@ -142,9 +253,39 @@ Public Class Server
     Private Sub ReceivedDataFromClient(ByVal sender As Object, ByVal e As AsyncEventArgs)
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
-        BlinkLedSensor(Msg)
-        ' CheckCoils(Msg)
+        Dim Msg As Byte() = e.ReceivedBytes
+
+        Select Case Msg(7)
+            Case &H1    'Read coils
+                Select Case Msg(10)
+                    Case &H0
+                        'r_data = "NO"
+                    Case &H1
+                        CheckCoils("UP")
+                    Case &H2
+                        CheckCoils("DOWN")
+                    Case &H3
+                        'r_data = UP/UP
+                End Select
+            Case &H2    'Read discrete inputs
+                Select Case Msg(9)
+                    Case &H1
+                        BlinkLedSensor("sensor0")
+                    Case &H2
+                        BlinkLedSensor("sensor1")
+                    Case &H4
+                        BlinkLedSensor("sensor2")
+                    Case &H8
+                        BlinkLedSensor("sensor3")
+                    Case &H16
+                        BlinkLedSensor("sensor4")
+                End Select
+            Case &H5    'Write coil
+                '???
+            Case &H15   'Force multiple coils
+                '???
+        End Select
+
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
@@ -153,7 +294,6 @@ Public Class Server
     Private Sub CheckCoils(ByVal Msg As String)
         Select Case Msg
             Case "UP"
-
                 Me.CoilUP.CheckState = CheckState.Checked
                 Me.CoilDown.CheckState = CheckState.Unchecked
             Case "DOWN"

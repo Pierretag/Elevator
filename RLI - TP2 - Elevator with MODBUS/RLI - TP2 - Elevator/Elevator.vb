@@ -9,14 +9,58 @@ Public Class Elevator
     Private clientIsRunning As Boolean = False
     Public server As Server
 
-
-
-    
-    Private Sub FC2_response(request As Byte()) 'Read discrete input
+    Private Function FC1_response(request As Byte()) As Byte() 'Read coils
         Dim datagram As Byte() = New Byte(10) {}
 
-        Dim t_id_0 As Integer = 0   'mettre en globale
-        Dim t_id_1 As Integer = 0   'mettre en globale
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H1   'MODBUS function code
+
+        datagram(8) = &H1   'Byte count
+
+        If Not CoilUP.Checked And Not CoilDown.Checked Then
+            datagram(9) = &H0
+        ElseIf CoilUP.Checked And Not CoilDown.Checked Then
+            datagram(9) = &H1
+        ElseIf Not CoilUP.Checked And CoilDown.Checked Then
+            datagram(9) = &H2
+        ElseIf CoilUP.Checked And CoilDown.Checked Then
+            datagram(9) = &H3
+        End If 'Bit values
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
+
+    Private Function FC1_exception(request As Byte()) As Byte() 'Read coils
+        Dim datagram As Byte() = New Byte(9) {}
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H81   'MODBUS function code
+
+        datagram(8) = &H1   'Exception code 0x01 or 0x02
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
+
+    Private Function FC2_response(request As Byte()) As Byte() 'Read discrete input
+        Dim datagram As Byte() = New Byte(10) {}
 
         Dim i As Integer = 0
 
@@ -28,19 +72,28 @@ Public Class Elevator
         datagram(7) = &H2   'MODBUS function code
 
         datagram(8) = &H1   'Byte count
-        'datagram(9) = Convert.ToByte(int aSensor) 'Bit values
-        datagram(9) = &H0   'Bit values
+
+        Select Case currentSensor
+            Case E_Sensor.sensor0
+                datagram(9) = &H1   'Bit values
+            Case E_Sensor.sensor1
+                datagram(9) = &H2   'Bit values
+            Case E_Sensor.sensor2
+                datagram(9) = &H4   'Bit values
+            Case E_Sensor.sensor3
+                datagram(9) = &H8   'Bit values
+            Case E_Sensor.sensor4
+                datagram(9) = &H16   'Bit values
+        End Select
 
         For Each content As Byte In datagram
             Debug.Write("Response " + content.ToString)
         Next
-    End Sub
+        Return datagram
+    End Function
 
-    Private Sub FC2_exception(request As Byte()) 'Read discrete input
+    Private Function FC2_exception(request As Byte()) As Byte() 'Read discrete input
         Dim datagram As Byte() = New Byte(9) {}
-
-        Dim t_id_0 As Integer = 0   'mettre en globale
-        Dim t_id_1 As Integer = 0   'mettre en globale
 
         Dim i As Integer = 0
 
@@ -56,8 +109,116 @@ Public Class Elevator
         For Each content As Byte In datagram
             Debug.Write("Response " + content.ToString)
         Next
-    End Sub
+        Return datagram
+    End Function
 
+    Private Function FC5_response(request As Byte()) As Byte() 'Write coils
+        Dim datagram As Byte() = New Byte(12) {}
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H5   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H1   'Reference number
+
+        datagram(10) = request(10)
+        datagram(11) = request(11)
+
+        If datagram(10) = 0 And datagram(11) = 1 Then
+            SetCoilUP(True)
+            SetCoilDown(False)
+            MessageBox.Show("UP")
+
+            'CoilUP.CheckState = CheckState.Checked
+            'CoilDown.CheckState = CheckState.Unchecked
+        ElseIf datagram(10) = 1 And datagram(11) = 0 Then
+            SetCoilUP(False)
+            SetCoilDown(True)
+            MessageBox.Show("DOWN")
+
+            'CoilDown.CheckState = CheckState.Checked
+            'CoilUP.CheckState = CheckState.Unchecked
+        ElseIf datagram(10) = 0 And datagram(11) = 0 Then
+            SetCoilUP(False)
+            SetCoilDown(False)
+            MessageBox.Show("NO")
+        End If
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
+
+    Private Function FC5_exception(request As Byte()) As Byte() 'Write coils
+        Dim datagram As Byte() = New Byte(9) {}
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H85   'MODBUS function code
+
+        datagram(8) = &H1   'Exception code 0x01 or 0x02 or 0x03
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
+
+    Private Function FC15_response(request As Byte()) As Byte() 'Force multiple coils
+        Dim datagram As Byte() = New Byte(12) {}
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &HF   'MODBUS function code
+
+        datagram(8) = &H0   'Reference number
+        datagram(9) = &H0   'Reference number
+
+        datagram(10) = &H0  'Bit count
+        datagram(11) = &H10 'Bit count
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
+
+    Private Function FC15_exception(request As Byte()) As Byte() 'Force multiple coils
+        Dim datagram As Byte() = New Byte(9) {}
+
+        Dim i As Integer = 0
+
+        Do While i <= 6
+            datagram(i) = request(i)
+            i += 1
+        Loop
+
+        datagram(7) = &H8F   'MODBUS function code
+
+        datagram(8) = &H1   'Exception code 0x01 or 0x02
+
+        For Each content As Byte In datagram
+            Debug.Write("Response " + content.ToString)
+        Next
+        Return datagram
+    End Function
 
     Private Sub ConnectToServer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ConnectToServer.Click
         If Not clientIsRunning Then
@@ -118,8 +279,6 @@ Public Class Elevator
         End If
     End Sub
 
-
-
     Public Sub SendMessageToServer(ByVal msg As Byte())
         If _socket IsNot Nothing Then
             If TryCast(_socket, AsynchronousClient) IsNot Nothing Then
@@ -165,41 +324,42 @@ Public Class Elevator
     Private Sub ReceivedDataFromServer(ByVal sender As Object, ByVal e As AsyncEventArgs)
         'Add some stuff to interpret messages (and remove the next line!)
         'Bytes are in e.ReceivedBytes and you can encore the bytes to string using Encoding.ASCII.GetString(e.ReceivedBytes)
-        Dim Msg As String = Encoding.ASCII.GetString(e.ReceivedBytes)
-        'MessageBox.Show("Server says :" + Msg, "I am Client")
-        Select Case Msg
-            Case "UpdateSensor"
-                SendCurrentSensor()
-            Case "UP"
-                'CoilUP.CheckState = CheckState.Checked
-                SetCoilUP(True)
-                SetCoilDown(False)
-                'MessageBox.Show("UP")
-                'CoilDown.CheckState = CheckState.Unchecked
-            Case "DOWN"
-                SetCoilUP(False)
-                SetCoilDown(True)
-                ' CoilDown.CheckState = CheckState.Checked
-                'CoilUP.CheckState = C
-                'CheckState.Unchecked()
-            Case "NO"
-                SetCoilUP(False)
-                SetCoilDown(False)
+        Dim Msg As Byte() = e.ReceivedBytes
+        Dim rsp As Byte()
+
+        Select Case Msg(7)  'Check MODBUS function code
+            Case &H1    'Read coils
+                rsp = FC1_response(Msg)
+            Case &H2    'Read discrete inputs
+                rsp = FC2_response(Msg)
+            Case &H5    'Write coil
+                rsp = FC5_response(Msg)
+            Case &H15   'Force multiple coils
+                rsp = FC15_response(Msg)
+            Case Else
+                rsp = FC1_exception(Msg)
         End Select
+
+        If clientIsRunning Then
+            Me.SendMessageToServer(rsp)
+        Else
+            Debug.WriteLine("Client is not running")
+        End If
+
         'BE CAREFUL!! 
         'If you want to change the properties of CoilUP/CoilDown/LedSensor... here, you must use safe functions. 
         'Functions for CoilUP and CoilDown are given (see SetCoilDown and SetCoilUP)
     End Sub
 
-
-    Private Sub SendCoilsToServer()
-        If CoilUP.Checked Then
-            SendMessageToServer(Encoding.ASCII.GetBytes("UP"))
-        End If
-        If CoilDown.Checked Then
-            SendMessageToServer(Encoding.ASCII.GetBytes("DOWN"))
-        End If
-    End Sub
+    ' ++++ dans la réponse serveur
+    'Private Sub SendCoilsToServer()
+    '    If CoilUP.Checked Then
+    '       SendMessageToServer(Encoding.ASCII.GetBytes("UP"))
+    '  End If
+    ' If CoilDown.Checked Then
+    '    SendMessageToServer(Encoding.ASCII.GetBytes("DOWN"))
+    'End If
+    'End Sub
 
 
     Private Sub ButtonCallFloor2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ButtonCallFloor2.Click
@@ -225,7 +385,7 @@ Public Class Elevator
             Me.ElevatorPhys.Location = New Point(Me.ElevatorPhys.Location.X, Me.ElevatorPhys.Location.Y + 1)
 
         End If
-        
+
         BlinkLedSensor()
         '  If isOnFloor Then
         'ClearLedSensor()
@@ -321,17 +481,18 @@ Public Class Elevator
 
     End Sub
 
-    Private Sub SendCurrentSensor()
-        If clientIsRunning Then
-            Me.SendMessageToServer(Encoding.ASCII.GetBytes(currentSensor.ToString))
-        End If
-    End Sub
+    ' ---- Ajout directement dans la fonction de traitement des requetes
+    'Private Sub SendCurrentSensor()
+    '    If clientIsRunning Then
+    '        Me.SendMessageToServer(Encoding.ASCII.GetBytes(currentSensor.ToString))
+    '    End If
+    'End Sub
 
 
 
 
 
-    
+
 
     Private Sub ButtonCallFloor0_Click(sender As Object, e As EventArgs) Handles ButtonCallFloor0.Click
         ' Me.AddFloorToList(E_Floor.floor0)
